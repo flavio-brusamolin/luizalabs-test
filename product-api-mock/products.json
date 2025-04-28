@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": "1",
+      "id": "6ce6b564-92d3-492a-91ba-ee4e6aee7d87",
       "title": "Smartphone",
       "price": 3500,
       "image": "https://example.com/images/smartphone.jpg",
@@ -9,15 +9,15 @@
       "reviewScore": 4.5
     },
     {
-      "id": "2",
+      "id": "5db40d1b-6609-4d56-b20e-eb00e53b6299",
       "title": "Notebook",
-      "price": 4500,
+      "price": 4530,
       "image": "https://example.com/images/notebook.jpg",
       "brand": "Dell",
       "reviewScore": 4.2
     },
     {
-      "id": "3",
+      "id": "be9d0e0d-0780-4918-ab28-df723dcb4e3c",
       "title": "Smart TV",
       "price": 2900,
       "image": "https://example.com/images/smart-tv.jpg",

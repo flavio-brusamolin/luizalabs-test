@@ -2,9 +2,11 @@ version: '3.8'
 
 services:
   product-api-mock:
-    image: clue/json-server
-    container_name: product-api-mock
-    ports:
-      - '8081:80'
+    build:
+      context: ./product-api-mock
+    image: product-api-mock
+    restart: always
     volumes:
-      - ./product-api-mock/products.json:/data/db.json
+      - ./product-api-mock:/product-api-mock
+    ports:
+      - 8081:8081
