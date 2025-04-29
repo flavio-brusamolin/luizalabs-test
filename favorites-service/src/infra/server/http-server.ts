@@ -13,11 +13,11 @@ export class HttpServer {
     this.app.use('/api', this.router);
   }
 
-  on(method: string, path: string, controller: Controller) {
+  on(method: string, path: string, controller: Controller): void {
     this.router[method](path, adaptRoute(controller));
   }
 
-  listen(port: number) {
+  listen(port: number): void {
     this.app.listen(port, () => console.log(`Server is running at http://localhost:${port}`));
   }
 }

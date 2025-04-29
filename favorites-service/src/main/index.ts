@@ -1,6 +1,6 @@
 import env from './config/env';
 import { AmqpProvider } from '../infra/queue/amqp-provider';
-import { HttpServer } from '../infra/http/http-server';
+import { HttpServer } from '../infra/server/http-server';
 import { buildStaleProductHandler, buildRemovedProductHandler } from './factories/handlers';
 import { buildAddFavoriteController, buildGetFavoritesController, buildRemoveFavoriteController } from './factories/controllers';
 
