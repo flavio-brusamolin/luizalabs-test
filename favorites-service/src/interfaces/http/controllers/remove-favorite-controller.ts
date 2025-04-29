@@ -1,11 +1,9 @@
-import { CustomerId } from '../../../domain/entities/customer';
-import { ProductId } from '../../../domain/entities/product';
-import { RemoveFavoriteUseCase } from '../../../domain/use-cases/remove-favorite';
+import { RemoveFavoriteInput, RemoveFavoriteUseCase } from '../../../domain/use-cases/remove-favorite';
 import { ErrorResponse, HttpRequest, HttpResponse } from '../contracts';
 import { error, noContent } from '../helpers/http-response-builder';
 import { Controller } from './controller';
 
-type RequestParams = { customerId: CustomerId; productId: ProductId };
+type RequestParams = RemoveFavoriteInput;
 
 export class RemoveFavoriteController implements Controller {
   constructor(private readonly removeFavoriteUseCase: RemoveFavoriteUseCase) {}

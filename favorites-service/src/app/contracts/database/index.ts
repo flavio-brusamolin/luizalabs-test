@@ -3,3 +3,5 @@ export * from './check-favorite-repository';
 export * from './get-favorites-repository';
 export * from './remove-favorite-repository';
 export * from './purge-favorite-repository';
+export * from './add-customer-repository';
+export * from './load-customer-by-email-repository';

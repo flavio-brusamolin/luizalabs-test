@@ -4,6 +4,8 @@ import {
   GetFavoritesRepository,
   PurgeFavoriteRepository,
   RemoveFavoriteRepository,
+  AddCustomerRepository,
+  LoadCustomerByEmailRepository,
 } from '../../app/contracts/database';
 import { Customer, CustomerId } from '../../domain/entities/customer';
 import { ProductId } from '../../domain/entities/product';
@@ -14,28 +16,20 @@ export class CustomerRepository
     CheckFavoriteRepository,
     GetFavoritesRepository,
     RemoveFavoriteRepository,
-    PurgeFavoriteRepository
+    PurgeFavoriteRepository,
+    LoadCustomerByEmailRepository,
+    AddCustomerRepository
 {
-  private static customers: Customer[] = [
-    {
-      customerId: '9e4ed06e-d589-40c2-bf07-f3e1069f1d8f',
-      email: 'flaviobrusamolin@gec.inatel.br',
-      name: 'Flavio',
-      favorites: [],
-    },
-    {
-      customerId: '7ee13a9e-0760-47c3-bbaa-4f391afd5640',
-      email: 'karenaribeiro81@gmail.com',
-      name: 'Karen',
-      favorites: [],
-    },
-    {
-      customerId: '7ee13a9e-0760-47c3-bbaa-4f391afd5642',
-      email: 'test@gmail.com',
-      name: 'Test',
-      favorites: [],
-    },
-  ];
+  private static customers: Customer[] = [];
+
+  async addCustomer(customer: Customer): Promise<Customer> {
+    CustomerRepository.customers.push(customer);
+    return customer;
+  }
+
+  async loadCustomerByEmail(email: string): Promise<Customer> {
+    return CustomerRepository.customers.find((customer) => customer.email === email);
+  }
 
   async addFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {
     const customer = this.findCustomer(customerId);
