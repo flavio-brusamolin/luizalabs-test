@@ -1,8 +1,8 @@
-import { AddFavoriteProductRepository, CheckFavoriteProductRepository } from '../../app/contracts/database';
+import { AddFavoriteRepository, CheckFavoriteRepository } from '../../app/contracts/database';
 import { Customer, CustomerId } from '../../domain/entities/customer';
 import { ProductId } from '../../domain/entities/product';
 
-export class CustomerRepository implements AddFavoriteProductRepository, CheckFavoriteProductRepository {
+export class CustomerRepository implements AddFavoriteRepository, CheckFavoriteRepository {
   private static customers: Customer[] = [
     {
       customerId: '9e4ed06e-d589-40c2-bf07-f3e1069f1d8f',

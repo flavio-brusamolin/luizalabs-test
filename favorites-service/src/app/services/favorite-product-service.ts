@@ -4,14 +4,14 @@ import { FavoriteProductInput, FavoriteProductUseCase } from '../../domain/use-c
 import { ExistingFavoriteError, ProductNotFoundError } from '../../domain/errors';
 import { GetProductClient } from '../contracts/api';
 import { AddProductCache, GetProductCache } from '../contracts/cache';
-import { AddFavoriteProductRepository, CheckFavoriteProductRepository } from '../contracts/database';
+import { AddFavoriteRepository, CheckFavoriteRepository } from '../contracts/database';
 import { PublishStaleProductQueue } from '../contracts/queue';
 
 export class FavoriteProductService implements FavoriteProductUseCase {
   constructor(
-    private readonly checkFavoriteProductRepository: CheckFavoriteProductRepository,
+    private readonly checkFavoriteRepository: CheckFavoriteRepository,
     private readonly getProductCache: GetProductCache,
-    private readonly addFavoriteProductRepository: AddFavoriteProductRepository,
+    private readonly addFavoriteRepository: AddFavoriteRepository,
     private readonly publishStaleProductQueue: PublishStaleProductQueue,
     private readonly getProductClient: GetProductClient,
     private readonly addProductCache: AddProductCache
@@ -22,7 +22,7 @@ export class FavoriteProductService implements FavoriteProductUseCase {
 
     // validar customerId, aqui ou na autenticação
 
-    const isAlreadyFavorite = await this.checkFavoriteProductRepository.isFavorite(customerId, productId);
+    const isAlreadyFavorite = await this.checkFavoriteRepository.isFavorite(customerId, productId);
     if (isAlreadyFavorite) {
       console.error(`Product ${productId} already favorited`);
       throw new ExistingFavoriteError();
@@ -42,7 +42,7 @@ export class FavoriteProductService implements FavoriteProductUseCase {
 
       console.log(`Adding product ${productId} to customer ${customerId} favorites and caching data`);
       await Promise.all([
-        this.addFavoriteProductRepository.addFavorite(customerId, productId),
+        this.addFavoriteRepository.addFavorite(customerId, productId),
         this.addProductCache.addProduct(product, CACHE_STALE_TIME),
       ]);
 
@@ -58,7 +58,7 @@ export class FavoriteProductService implements FavoriteProductUseCase {
     }
 
     console.log(`Adding product ${productId} to customer favorites`);
-    await this.addFavoriteProductRepository.addFavorite(customerId, productId);
+    await this.addFavoriteRepository.addFavorite(customerId, productId);
     return cachedProduct;
   }
 }

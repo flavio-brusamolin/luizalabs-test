@@ -1,2 +1,2 @@
-export * from './add-favorite-product-repository';
-export * from './check-favorite-product-repository';
+export * from './add-favorite-repository';
+export * from './check-favorite-repository';
