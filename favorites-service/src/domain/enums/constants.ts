@@ -1,0 +1,3 @@
+const CACHE_STALE_TIME = 10000;
+
+export { CACHE_STALE_TIME };

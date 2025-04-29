@@ -1,2 +1,40 @@
-const test: number = 56;
-console.log(test);
+import env from './config/env';
+import { AmqpProvider } from '../infra/queue/amqp-provider';
+import { HttpServer } from '../infra/http/http-server';
+import { buildFavoriteProductController } from './factories/favorite-product-controller-factory';
+
+class Application {
+  private amqpProvider: AmqpProvider;
+  private httpServer: HttpServer;
+
+  private async initMessageQueue(): Promise<void> {
+    this.amqpProvider = new AmqpProvider();
+    await this.amqpProvider.init(env.rabbitUrl, env.queues);
+    this.setupQueues();
+  }
+
+  private initServer(): void {
+    this.httpServer = new HttpServer();
+    this.setupRoutes();
+    this.httpServer.listen(env.port);
+  }
+
+  private setupQueues(): void {
+    this.amqpProvider.subscribe('stale-product-update', { handle: async () => console.log('Updating stale product') });
+  }
+
+  private setupRoutes(): void {
+    this.httpServer.on('post', '/customers/:customerId/favorites', buildFavoriteProductController());
+  }
+
+  async init(): Promise<void> {
+    try {
+      await this.initMessageQueue();
+      this.initServer();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+new Application().init();

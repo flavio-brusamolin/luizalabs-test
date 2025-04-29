@@ -10,3 +10,39 @@ services:
       - ./product-api-mock:/product-api-mock
     ports:
       - 8081:8081
+
+  message-queue:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-admin}
+    ports:
+      - 15672:15672
+      - 5672:5672
+    healthcheck:
+      test: rabbitmq-diagnostics -q status
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  favorites-service:
+    build:
+      context: ./favorites-service
+      dockerfile: Dockerfile.dev
+    image: favorites-service
+    restart: always
+    environment:
+      PORT: 8080
+      PRODUCT_API_URL: http://product-api-mock:8081
+      RABBITMQ_URL: amqp://admin:admin@message-queue:5672
+    volumes:
+      - ./favorites-service:/favorites-service
+      - /favorites-service/node_modules
+    ports:
+      - 8080:8080
+    depends_on:
+      product-api-mock:
+        condition: service_started
+      message-queue:
+        condition: service_healthy
