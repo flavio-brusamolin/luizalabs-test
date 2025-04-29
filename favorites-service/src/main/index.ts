@@ -5,6 +5,7 @@ import { buildStaleProductHandler } from './factories/stale-product-handler-fact
 import { buildAddFavoriteController } from './factories/add-favorite-controller-factory';
 import { buildGetFavoritesController } from './factories/get-favorites-controller-factory';
 import { buildRemoveFavoriteController } from './factories/remove-favorite-controller-factory';
+import { buildRemovedProductHandler } from './factories/removed-product-handler-factory';
 
 class Application {
   private amqpProvider: AmqpProvider;
@@ -24,6 +25,7 @@ class Application {
 
   private setupQueues(): void {
     this.amqpProvider.subscribe('stale-product', buildStaleProductHandler());
+    this.amqpProvider.subscribe('removed-product', buildRemovedProductHandler());
   }
 
   private setupRoutes(): void {

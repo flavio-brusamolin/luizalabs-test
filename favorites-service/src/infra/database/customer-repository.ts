@@ -2,13 +2,19 @@ import {
   AddFavoriteRepository,
   CheckFavoriteRepository,
   GetFavoritesRepository,
+  PurgeFavoriteRepository,
   RemoveFavoriteRepository,
 } from '../../app/contracts/database';
 import { Customer, CustomerId } from '../../domain/entities/customer';
 import { ProductId } from '../../domain/entities/product';
 
 export class CustomerRepository
-  implements AddFavoriteRepository, CheckFavoriteRepository, GetFavoritesRepository, RemoveFavoriteRepository
+  implements
+    AddFavoriteRepository,
+    CheckFavoriteRepository,
+    GetFavoritesRepository,
+    RemoveFavoriteRepository,
+    PurgeFavoriteRepository
 {
   private static customers: Customer[] = [
     {
@@ -53,6 +59,15 @@ export class CustomerRepository
   async removeFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {
     const customer = await this.findCustomer(customerId);
     customer.favorites = customer.favorites.filter((favorite) => favorite !== productId);
+    return Promise.resolve();
+  }
+
+  async purgeFavorite(productId: ProductId): Promise<void> {
+    for (const customer of CustomerRepository.customers) {
+      if (customer.favorites.includes(productId)) {
+        customer.favorites = customer.favorites.filter((favorite) => favorite !== productId);
+      }
+    }
     return Promise.resolve();
   }
 
