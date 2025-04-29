@@ -2,7 +2,7 @@ import env from './config/env';
 import { AmqpProvider } from '../infra/queue/amqp-provider';
 import { HttpServer } from '../infra/http/http-server';
 import { buildStaleProductHandler } from './factories/stale-product-handler-factory';
-import { buildFavoriteProductController } from './factories/favorite-product-controller-factory';
+import { buildAddFavoriteController } from './factories/add-favorite-controller-factory';
 import { buildGetFavoritesController } from './factories/get-favorites-controller-factory';
 
 class Application {
@@ -26,7 +26,7 @@ class Application {
   }
 
   private setupRoutes(): void {
-    this.httpServer.on('post', '/customers/:customerId/favorites', buildFavoriteProductController());
+    this.httpServer.on('post', '/customers/:customerId/favorites', buildAddFavoriteController());
     this.httpServer.on('get', '/customers/:customerId/favorites', buildGetFavoritesController());
   }
 

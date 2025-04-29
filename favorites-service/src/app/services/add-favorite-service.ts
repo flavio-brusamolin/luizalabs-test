@@ -1,13 +1,13 @@
 import { CACHE_STALE_TIME } from '../../domain/enums/constants';
 import { Product } from '../../domain/entities/product';
-import { FavoriteProductInput, FavoriteProductUseCase } from '../../domain/use-cases/favorite-product';
+import { AddFavoriteUseCase, AddFavoriteInput } from '../../domain/use-cases/add-favorite';
 import { ExistingFavoriteError, ProductNotFoundError } from '../../domain/errors';
 import { GetProductClient } from '../contracts/api';
 import { AddProductCache, GetProductCache } from '../contracts/cache';
 import { AddFavoriteRepository, CheckFavoriteRepository } from '../contracts/database';
 import { PublishStaleProductQueue } from '../contracts/queue';
 
-export class FavoriteProductService implements FavoriteProductUseCase {
+export class AddFavoriteService implements AddFavoriteUseCase {
   constructor(
     private readonly checkFavoriteRepository: CheckFavoriteRepository,
     private readonly getProductCache: GetProductCache,
@@ -17,7 +17,7 @@ export class FavoriteProductService implements FavoriteProductUseCase {
     private readonly addProductCache: AddProductCache
   ) {}
 
-  async execute({ customerId, productId }: FavoriteProductInput): Promise<Product> {
+  async execute({ customerId, productId }: AddFavoriteInput): Promise<Product> {
     console.log(`Adding product ${productId} to customer ${customerId} favorites`);
 
     // validar existencia do customerId, aqui ou na autenticação

@@ -1,6 +1,6 @@
 import { CustomerId } from '../../../domain/entities/customer';
 import { Product, ProductId } from '../../../domain/entities/product';
-import { FavoriteProductUseCase } from '../../../domain/use-cases/favorite-product';
+import { AddFavoriteUseCase } from '../../../domain/use-cases/add-favorite';
 import { ErrorResponse, HttpRequest, HttpResponse } from '../contracts';
 import { created, error } from '../helpers/http-response-builder';
 import { Controller } from './controller';
@@ -9,8 +9,8 @@ type RequestBody = { productId: ProductId };
 type RequestParams = { customerId: CustomerId };
 type ResponseBody = Product | ErrorResponse;
 
-export class FavoriteProductController implements Controller {
-  constructor(private readonly favoriteProductUseCase: FavoriteProductUseCase) {}
+export class AddFavoriteController implements Controller {
+  constructor(private readonly addFavoriteUseCase: AddFavoriteUseCase) {}
 
   async handle(httpRequest: HttpRequest<RequestBody, any, RequestParams>): Promise<HttpResponse<ResponseBody>> {
     const input = {
@@ -19,7 +19,7 @@ export class FavoriteProductController implements Controller {
     };
 
     try {
-      const product = await this.favoriteProductUseCase.execute(input);
+      const product = await this.addFavoriteUseCase.execute(input);
       return created(product);
     } catch (exception) {
       console.error(exception);
