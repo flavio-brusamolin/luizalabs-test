@@ -1,6 +1,6 @@
 import env from '../../config/env';
 import { UpdateStaleProductService } from '../../../app/services/update-stale-product-service';
-import { ProductApiClient } from '../../../infra/api/product-api-client';
+import { ProductApiClient } from '../../../infra/integration/product-api-client';
 import { ProductCache } from '../../../infra/cache/product-cache';
 import { MessageQueueClient } from '../../../infra/queue/message-queue-client';
 import { Handler } from '../../../interfaces/amqp/handlers/handler';

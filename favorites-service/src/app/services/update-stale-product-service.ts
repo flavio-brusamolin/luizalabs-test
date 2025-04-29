@@ -1,6 +1,6 @@
 import { CACHE_STALE_TIME } from '../../domain/enums/constants';
 import { UpdateStaleProductInput, UpdateStaleProductUseCase } from '../../domain/use-cases/update-stale-product';
-import { GetProductClient } from '../contracts/api';
+import { GetProductClient } from '../contracts/integration';
 import { UpdateProductCache } from '../contracts/cache';
 import { PublishRemovedProductQueue } from '../contracts/queue';
 

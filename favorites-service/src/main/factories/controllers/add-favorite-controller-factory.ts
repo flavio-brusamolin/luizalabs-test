@@ -1,6 +1,6 @@
 import env from '../../config/env';
 import { AddFavoriteService } from '../../../app/services/add-favorite-service';
-import { ProductApiClient } from '../../../infra/api/product-api-client';
+import { ProductApiClient } from '../../../infra/integration/product-api-client';
 import { ProductCache } from '../../../infra/cache/product-cache';
 import { CustomerRepository } from '../../../infra/database/customer-repository';
 import { AmqpProvider } from '../../../infra/queue/amqp-provider';

@@ -1,5 +1,5 @@
 import * as axios from 'axios';
-import { GetProductClient } from '../../app/contracts/api';
+import { GetProductClient } from '../../app/contracts/integration';
 import { ProductId, Product } from '../../domain/entities/product';
 
 interface ProductResponse {

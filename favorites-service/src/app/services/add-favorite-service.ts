@@ -2,7 +2,7 @@ import { CACHE_STALE_TIME } from '../../domain/enums/constants';
 import { Product } from '../../domain/entities/product';
 import { AddFavoriteUseCase, AddFavoriteInput } from '../../domain/use-cases/add-favorite';
 import { ExistingFavoriteError, ProductNotFoundError } from '../../domain/errors';
-import { GetProductClient } from '../contracts/api';
+import { GetProductClient } from '../contracts/integration';
 import { AddProductCache, GetProductCache } from '../contracts/cache';
 import { AddFavoriteRepository, CheckFavoriteRepository } from '../contracts/database';
 import { PublishStaleProductQueue } from '../contracts/queue';
