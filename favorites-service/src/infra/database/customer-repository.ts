@@ -38,28 +38,25 @@ export class CustomerRepository
   ];
 
   async addFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {
-    const customer = await this.findCustomer(customerId);
+    const customer = this.findCustomer(customerId);
     if (!customer.favorites.includes(productId)) {
       customer.favorites.push(productId);
     }
-    return Promise.resolve();
   }
 
   async isFavorite(customerId: CustomerId, productId: ProductId): Promise<boolean> {
-    const customer = await this.findCustomer(customerId);
-    const isFavorite = customer.favorites.includes(productId);
-    return Promise.resolve(isFavorite);
+    const customer = this.findCustomer(customerId);
+    return customer.favorites.includes(productId);
   }
 
   async getFavorites(customerId: CustomerId): Promise<Array<ProductId>> {
-    const customer = await this.findCustomer(customerId);
-    return Promise.resolve(customer.favorites);
+    const customer = this.findCustomer(customerId);
+    return customer.favorites;
   }
 
   async removeFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {
-    const customer = await this.findCustomer(customerId);
+    const customer = this.findCustomer(customerId);
     customer.favorites = customer.favorites.filter((favorite) => favorite !== productId);
-    return Promise.resolve();
   }
 
   async purgeFavorite(productId: ProductId): Promise<void> {
@@ -68,19 +65,14 @@ export class CustomerRepository
         customer.favorites = customer.favorites.filter((favorite) => favorite !== productId);
       }
     }
-    return Promise.resolve();
   }
 
-  private async findCustomer(customerId: CustomerId): Promise<Customer> {
+  private findCustomer(customerId: CustomerId): Customer {
     const customer = CustomerRepository.customers.find((customer) => customer.customerId === customerId);
     if (!customer) {
-      return Promise.reject(new Error('Customer not found'));
+      throw new Error('Customer not found');
     }
 
-    return Promise.resolve(customer);
+    return customer;
   }
-
-  // addCustomer(customer: Customer) {
-  //   CustomerRepository.customers.push(customer);
-  // }
 }

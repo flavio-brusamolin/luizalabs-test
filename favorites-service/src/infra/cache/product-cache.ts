@@ -6,22 +6,19 @@ export class ProductCache implements AddProductCache, GetProductCache, UpdatePro
 
   async addProduct(product: Product, staleTime: number): Promise<void> {
     this.setProduct(product, staleTime);
-    return Promise.resolve();
   }
 
   async updateProduct(product: Product, staleTime: number): Promise<void> {
     this.setProduct(product, staleTime);
-    return Promise.resolve();
   }
 
   async getProduct(productId: ProductId): Promise<Product> {
     const product = ProductCache.products.get(productId);
-    return Promise.resolve(product?.data);
+    return product?.data;
   }
 
   async removeProduct(productId: ProductId): Promise<void> {
     ProductCache.products.delete(productId);
-    return Promise.resolve();
   }
 
   private setProduct(product: Product, staleTime: number): void {
