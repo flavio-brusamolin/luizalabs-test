@@ -1,11 +1,8 @@
 import env from './config/env';
 import { AmqpProvider } from '../infra/queue/amqp-provider';
 import { HttpServer } from '../infra/http/http-server';
-import { buildStaleProductHandler } from './factories/stale-product-handler-factory';
-import { buildAddFavoriteController } from './factories/add-favorite-controller-factory';
-import { buildGetFavoritesController } from './factories/get-favorites-controller-factory';
-import { buildRemoveFavoriteController } from './factories/remove-favorite-controller-factory';
-import { buildRemovedProductHandler } from './factories/removed-product-handler-factory';
+import { buildStaleProductHandler, buildRemovedProductHandler } from './factories/handlers';
+import { buildAddFavoriteController, buildGetFavoritesController, buildRemoveFavoriteController } from './factories/controllers';
 
 class Application {
   private amqpProvider: AmqpProvider;
