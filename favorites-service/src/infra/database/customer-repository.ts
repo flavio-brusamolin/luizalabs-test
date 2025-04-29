@@ -1,8 +1,15 @@
-import { AddFavoriteRepository, CheckFavoriteRepository, GetFavoritesRepository } from '../../app/contracts/database';
+import {
+  AddFavoriteRepository,
+  CheckFavoriteRepository,
+  GetFavoritesRepository,
+  RemoveFavoriteRepository,
+} from '../../app/contracts/database';
 import { Customer, CustomerId } from '../../domain/entities/customer';
 import { ProductId } from '../../domain/entities/product';
 
-export class CustomerRepository implements AddFavoriteRepository, CheckFavoriteRepository, GetFavoritesRepository {
+export class CustomerRepository
+  implements AddFavoriteRepository, CheckFavoriteRepository, GetFavoritesRepository, RemoveFavoriteRepository
+{
   private static customers: Customer[] = [
     {
       customerId: '9e4ed06e-d589-40c2-bf07-f3e1069f1d8f',
@@ -25,11 +32,7 @@ export class CustomerRepository implements AddFavoriteRepository, CheckFavoriteR
   ];
 
   async addFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {
-    const customer = CustomerRepository.customers.find((customer) => customer.customerId === customerId);
-    if (!customer) {
-      return Promise.reject(new Error('Customer not found'));
-    }
-
+    const customer = await this.findCustomer(customerId);
     if (!customer.favorites.includes(productId)) {
       customer.favorites.push(productId);
     }
@@ -37,22 +40,29 @@ export class CustomerRepository implements AddFavoriteRepository, CheckFavoriteR
   }
 
   async isFavorite(customerId: CustomerId, productId: ProductId): Promise<boolean> {
-    const customer = CustomerRepository.customers.find((customer) => customer.customerId === customerId);
-    if (!customer) {
-      return Promise.reject(new Error('Customer not found'));
-    }
-
+    const customer = await this.findCustomer(customerId);
     const isFavorite = customer.favorites.includes(productId);
     return Promise.resolve(isFavorite);
   }
 
   async getFavorites(customerId: CustomerId): Promise<Array<ProductId>> {
+    const customer = await this.findCustomer(customerId);
+    return Promise.resolve(customer.favorites);
+  }
+
+  async removeFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {
+    const customer = await this.findCustomer(customerId);
+    customer.favorites = customer.favorites.filter((favorite) => favorite !== productId);
+    return Promise.resolve();
+  }
+
+  private async findCustomer(customerId: CustomerId): Promise<Customer> {
     const customer = CustomerRepository.customers.find((customer) => customer.customerId === customerId);
     if (!customer) {
       return Promise.reject(new Error('Customer not found'));
     }
 
-    return Promise.resolve(customer.favorites);
+    return Promise.resolve(customer);
   }
 
   // addCustomer(customer: Customer) {

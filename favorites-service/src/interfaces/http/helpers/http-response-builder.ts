@@ -12,6 +12,11 @@ export const ok = <T>(data: T): HttpResponse<T> => ({
   body: data,
 });
 
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
+  body: null,
+});
+
 export const error = (error: CustomError): HttpResponse<ErrorResponse> => ({
   statusCode: mapStatusCode(error),
   body: mapMessage(error),

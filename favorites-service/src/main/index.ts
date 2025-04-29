@@ -4,6 +4,7 @@ import { HttpServer } from '../infra/http/http-server';
 import { buildStaleProductHandler } from './factories/stale-product-handler-factory';
 import { buildAddFavoriteController } from './factories/add-favorite-controller-factory';
 import { buildGetFavoritesController } from './factories/get-favorites-controller-factory';
+import { buildRemoveFavoriteController } from './factories/remove-favorite-controller-factory';
 
 class Application {
   private amqpProvider: AmqpProvider;
@@ -28,6 +29,7 @@ class Application {
   private setupRoutes(): void {
     this.httpServer.on('post', '/customers/:customerId/favorites', buildAddFavoriteController());
     this.httpServer.on('get', '/customers/:customerId/favorites', buildGetFavoritesController());
+    this.httpServer.on('delete', '/customers/:customerId/favorites/:productId', buildRemoveFavoriteController());
   }
 
   async init(): Promise<void> {
