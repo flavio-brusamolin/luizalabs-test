@@ -29,7 +29,7 @@ export class ProductCache implements AddProductCache, GetProductCache, UpdatePro
     }, staleTime);
 
     ProductCache.products.set(product.productId, {
-      data: { ...product, stale: false },
+      data: product,
       staleTimer,
     });
   }
@@ -37,10 +37,7 @@ export class ProductCache implements AddProductCache, GetProductCache, UpdatePro
   private markAsStale(productId: ProductId): void {
     const product = ProductCache.products.get(productId);
     if (product) {
-      ProductCache.products.set(productId, {
-        data: { ...product.data, stale: true },
-      });
-
+      product.data.markAsStale();
       this.clearStaleTimer(productId);
     }
   }

@@ -37,13 +37,12 @@ export class ProductApiClient implements GetProductClient {
   }
 
   private mapToEntity(productResponse: ProductResponse): Product {
-    return {
+    return new Product({
       productId: productResponse.id,
       title: productResponse.title,
       image: productResponse.image,
       price: productResponse.price,
       reviewScore: productResponse.reviewScore,
-      stale: false,
-    };
+    });
   }
 }
