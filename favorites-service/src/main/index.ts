@@ -1,6 +1,7 @@
 import env from './config/env';
 import { AmqpProvider } from '../infra/queue/amqp-provider';
 import { HttpServer } from '../infra/http/http-server';
+import { buildStaleProductHandler } from './factories/stale-product-handler-factory';
 import { buildFavoriteProductController } from './factories/favorite-product-controller-factory';
 
 class Application {
@@ -9,7 +10,7 @@ class Application {
 
   private async initMessageQueue(): Promise<void> {
     this.amqpProvider = new AmqpProvider();
-    await this.amqpProvider.init(env.rabbitUrl, env.queues);
+    await this.amqpProvider.init(env.amqpConfig);
     this.setupQueues();
   }
 
@@ -20,7 +21,7 @@ class Application {
   }
 
   private setupQueues(): void {
-    this.amqpProvider.subscribe('stale-product-update', { handle: async () => console.log('Updating stale product') });
+    this.amqpProvider.subscribe('stale-product', buildStaleProductHandler());
   }
 
   private setupRoutes(): void {

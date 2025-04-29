@@ -1,14 +1,20 @@
 import { connect, ChannelModel, Channel, Replies } from 'amqplib';
-// import { AsyncHandler } from '../../../presentation/protocols/async-handler';
+import { Handler } from '../../interfaces/amqp/handlers/handler';
+
+interface Config {
+  uri: string;
+  queues: string[];
+  retryInterval: number;
+}
 
 export class AmqpProvider {
   private static connection: ChannelModel;
   private static channel: Channel;
 
-  public async init(uri: string, queues: string[]): Promise<void> {
+  public async init({ uri, queues, retryInterval }: Config): Promise<void> {
     await this.establishConnection(uri);
     await this.createChannel();
-    await this.assertQueues(queues);
+    await this.assertQueues(queues, retryInterval);
   }
 
   public publish<T>(queue: string, payload: T): boolean {
@@ -16,13 +22,12 @@ export class AmqpProvider {
     return AmqpProvider.channel.sendToQueue(queue, payloadBuffer, { persistent: true });
   }
 
-  public subscribe(queue: string, asyncHandler: any): Promise<Replies.Consume> {
+  public subscribe(queue: string, handler: Handler): Promise<Replies.Consume> {
     return AmqpProvider.channel.consume(queue, async (message) => {
       try {
-        await asyncHandler.handle({ content: JSON.parse(message.content.toString()) });
+        await handler.handle({ content: JSON.parse(message.content.toString()) });
         AmqpProvider.channel.ack(message);
       } catch (error) {
-        console.error(error);
         AmqpProvider.channel.reject(message, false);
       }
     });
@@ -40,9 +45,22 @@ export class AmqpProvider {
     }
   }
 
-  private async assertQueues(queues: string[]): Promise<void> {
+  private async assertQueues(queues: string[], retryInterval: number): Promise<void> {
     for (const queue of queues) {
-      await AmqpProvider.channel.assertQueue(queue, { durable: true });
+      const deadLetterQueue = `${queue}-dlq`;
+
+      await AmqpProvider.channel.assertQueue(deadLetterQueue, {
+        durable: true,
+        deadLetterExchange: '',
+        deadLetterRoutingKey: queue,
+        messageTtl: retryInterval,
+      });
+
+      await AmqpProvider.channel.assertQueue(queue, {
+        durable: true,
+        deadLetterExchange: '',
+        deadLetterRoutingKey: deadLetterQueue,
+      });
     }
   }
 }

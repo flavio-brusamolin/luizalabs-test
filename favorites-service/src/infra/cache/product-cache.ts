@@ -1,11 +1,26 @@
-import { AddProductCache, GetProductCache } from '../../app/contracts/cache';
+import { AddProductCache, GetProductCache, UpdateProductCache } from '../../app/contracts/cache';
 import { Product, ProductId } from '../../domain/entities/product';
 
-export class ProductCache implements AddProductCache, GetProductCache {
+export class ProductCache implements AddProductCache, GetProductCache, UpdateProductCache {
   private static products = new Map<ProductId, { data: Product; staleTimer?: NodeJS.Timeout }>();
 
   async addProduct(product: Product, staleTime: number): Promise<void> {
-    // this.clearExpirationTimer(product.productId);
+    this.setProduct(product, staleTime);
+    return Promise.resolve();
+  }
+
+  async updateProduct(product: Product, staleTime: number): Promise<void> {
+    this.setProduct(product, staleTime);
+    return Promise.resolve();
+  }
+
+  async getProduct(productId: ProductId): Promise<Product> {
+    const product = ProductCache.products.get(productId);
+    return Promise.resolve(product?.data);
+  }
+
+  private setProduct(product: Product, staleTime: number): void {
+    this.clearStaleTimer(product.productId);
 
     const staleTimer = setTimeout(() => {
       this.markAsStale(product.productId);
@@ -15,13 +30,6 @@ export class ProductCache implements AddProductCache, GetProductCache {
       data: { ...product, stale: false },
       staleTimer,
     });
-
-    return Promise.resolve();
-  }
-
-  async getProduct(productId: ProductId): Promise<Product> {
-    const product = ProductCache.products.get(productId);
-    return Promise.resolve(product?.data);
   }
 
   private markAsStale(productId: ProductId): void {
@@ -31,15 +39,14 @@ export class ProductCache implements AddProductCache, GetProductCache {
         data: { ...product.data, stale: true },
       });
 
-      clearTimeout(product.staleTimer);
-      // this.clearExpirationTimer(productId);
+      this.clearStaleTimer(productId);
     }
   }
 
-  // private clearExpirationTimer(productId: ProductId): void {
-  //   const product = ProductCache.products.get(productId);
-  //   if (product?.staleTimer) {
-  //     clearTimeout(product.staleTimer);
-  //   }
-  // }
+  private clearStaleTimer(productId: ProductId): void {
+    const product = ProductCache.products.get(productId);
+    if (product?.staleTimer) {
+      clearTimeout(product.staleTimer);
+    }
+  }
 }
