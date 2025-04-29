@@ -20,7 +20,7 @@ export class FavoriteProductService implements FavoriteProductUseCase {
   async execute({ customerId, productId }: FavoriteProductInput): Promise<Product> {
     console.log(`Adding product ${productId} to customer ${customerId} favorites`);
 
-    // validar customerId, aqui ou na autenticação
+    // validar existencia do customerId, aqui ou na autenticação
 
     const isAlreadyFavorite = await this.checkFavoriteRepository.isFavorite(customerId, productId);
     if (isAlreadyFavorite) {

@@ -7,12 +7,12 @@ import { Controller } from './controller';
 
 type RequestBody = { productId: ProductId };
 type RequestParams = { customerId: CustomerId };
-type ResponseBody = HttpResponse<Product | ErrorResponse>;
+type ResponseBody = Product | ErrorResponse;
 
 export class FavoriteProductController implements Controller {
   constructor(private readonly favoriteProductUseCase: FavoriteProductUseCase) {}
 
-  async handle(httpRequest: HttpRequest<RequestBody, any, RequestParams>): Promise<ResponseBody> {
+  async handle(httpRequest: HttpRequest<RequestBody, any, RequestParams>): Promise<HttpResponse<ResponseBody>> {
     const input = {
       customerId: httpRequest.params.customerId,
       productId: httpRequest.body.productId,

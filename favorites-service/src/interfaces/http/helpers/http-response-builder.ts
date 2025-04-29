@@ -7,10 +7,10 @@ export const created = <T>(data: T): HttpResponse<T> => ({
   body: data,
 });
 
-// export const ok = <T>(data: T): HttpResponse<T> => ({
-//   statusCode: 200,
-//   body: data,
-// });
+export const ok = <T>(data: T): HttpResponse<T> => ({
+  statusCode: 200,
+  body: data,
+});
 
 export const error = (error: CustomError): HttpResponse<ErrorResponse> => ({
   statusCode: mapStatusCode(error),

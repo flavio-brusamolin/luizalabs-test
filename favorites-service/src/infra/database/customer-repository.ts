@@ -1,8 +1,8 @@
-import { AddFavoriteRepository, CheckFavoriteRepository } from '../../app/contracts/database';
+import { AddFavoriteRepository, CheckFavoriteRepository, GetFavoritesRepository } from '../../app/contracts/database';
 import { Customer, CustomerId } from '../../domain/entities/customer';
 import { ProductId } from '../../domain/entities/product';
 
-export class CustomerRepository implements AddFavoriteRepository, CheckFavoriteRepository {
+export class CustomerRepository implements AddFavoriteRepository, CheckFavoriteRepository, GetFavoritesRepository {
   private static customers: Customer[] = [
     {
       customerId: '9e4ed06e-d589-40c2-bf07-f3e1069f1d8f',
@@ -44,6 +44,15 @@ export class CustomerRepository implements AddFavoriteRepository, CheckFavoriteR
 
     const isFavorite = customer.favorites.includes(productId);
     return Promise.resolve(isFavorite);
+  }
+
+  async getFavorites(customerId: CustomerId): Promise<Array<ProductId>> {
+    const customer = CustomerRepository.customers.find((customer) => customer.customerId === customerId);
+    if (!customer) {
+      return Promise.reject(new Error('Customer not found'));
+    }
+
+    return Promise.resolve(customer.favorites);
   }
 
   // addCustomer(customer: Customer) {
