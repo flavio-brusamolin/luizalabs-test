@@ -1,9 +1,9 @@
 import { connect, ChannelModel, Channel, Replies } from 'amqplib';
 import { Handler } from '../../interfaces/amqp/handlers/handler';
+import queues from './queues';
 
 interface Config {
   uri: string;
-  queues: string[];
   retryInterval: number;
 }
 
@@ -11,10 +11,10 @@ export class AmqpProvider {
   private static connection: ChannelModel;
   private static channel: Channel;
 
-  public async init({ uri, queues, retryInterval }: Config): Promise<void> {
+  public async init({ uri, retryInterval }: Config): Promise<void> {
     await this.establishConnection(uri);
     await this.createChannel();
-    await this.assertQueues(queues, retryInterval);
+    await this.assertQueues(retryInterval);
   }
 
   public publish<T>(queue: string, payload: T): boolean {
@@ -45,8 +45,8 @@ export class AmqpProvider {
     }
   }
 
-  private async assertQueues(queues: string[], retryInterval: number): Promise<void> {
-    for (const queue of queues) {
+  private async assertQueues(retryInterval: number): Promise<void> {
+    for (const queue of Object.values(queues)) {
       const deadLetterQueue = `${queue}-dlq`;
 
       await AmqpProvider.channel.assertQueue(deadLetterQueue, {

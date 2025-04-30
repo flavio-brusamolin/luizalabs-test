@@ -10,8 +10,8 @@ import { AddFavoriteController } from '../../../interfaces/http/controllers/add-
 
 export const buildAddFavoriteController = (): Controller => {
   const customerRepository = new CustomerRepository();
-  const productCache = new ProductCache();
-  const productApiClient = new ProductApiClient(env.productApiUrl);
+  const productCache = new ProductCache(env.cacheConfig.staleTime);
+  const productApiClient = new ProductApiClient(env.integrationConfig.productApiUrl);
   const messageQueueClient = new MessageQueueClient(new AmqpProvider());
 
   const addFavoriteService = new AddFavoriteService(

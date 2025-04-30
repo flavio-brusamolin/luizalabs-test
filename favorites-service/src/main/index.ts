@@ -1,4 +1,5 @@
 import env from './config/env';
+import queues from '../infra/queue/queues';
 import { AmqpProvider } from '../infra/queue/amqp-provider';
 import { HttpServer } from '../infra/server/http-server';
 import { buildStaleProductHandler, buildRemovedProductHandler } from './factories/handlers';
@@ -22,12 +23,12 @@ class Application {
   private initServer(): void {
     this.httpServer = new HttpServer();
     this.setupRoutes();
-    this.httpServer.listen(env.port);
+    this.httpServer.listen(env.serverConfig.port);
   }
 
   private setupQueues(): void {
-    this.amqpProvider.subscribe('stale-product', buildStaleProductHandler());
-    this.amqpProvider.subscribe('removed-product', buildRemovedProductHandler());
+    this.amqpProvider.subscribe(queues.STALE_PRODUCT, buildStaleProductHandler());
+    this.amqpProvider.subscribe(queues.REMOVED_PRODUCT, buildRemovedProductHandler());
   }
 
   private setupRoutes(): void {

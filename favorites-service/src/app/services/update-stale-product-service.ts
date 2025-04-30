@@ -1,4 +1,3 @@
-import { CACHE_STALE_TIME } from '../../domain/enums/constants';
 import { UpdateStaleProductInput, UpdateStaleProductUseCase } from '../../domain/use-cases/update-stale-product';
 import { GetProductClient } from '../contracts/integration';
 import { UpdateProductCache } from '../contracts/cache';
@@ -21,6 +20,6 @@ export class UpdateStaleProductService implements UpdateStaleProductUseCase {
     }
 
     console.log(`Updating product ${productId} in cache`);
-    await this.updateProductCache.updateProduct(product, CACHE_STALE_TIME);
+    await this.updateProductCache.updateProduct(product);
   }
 }

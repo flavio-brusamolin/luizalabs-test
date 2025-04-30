@@ -8,9 +8,9 @@ import { StaleProductHandler } from '../../../interfaces/amqp/handlers/stale-pro
 import { AmqpProvider } from '../../../infra/queue/amqp-provider';
 
 export const buildStaleProductHandler = (): Handler => {
-  const productApiClient = new ProductApiClient(env.productApiUrl);
+  const productApiClient = new ProductApiClient(env.integrationConfig.productApiUrl);
   const messageQueueClient = new MessageQueueClient(new AmqpProvider());
-  const productCache = new ProductCache();
+  const productCache = new ProductCache(env.cacheConfig.staleTime);
   const updateStaleProductService = new UpdateStaleProductService(productApiClient, messageQueueClient, productCache);
   return new StaleProductHandler(updateStaleProductService);
 };

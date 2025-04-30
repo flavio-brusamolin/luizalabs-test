@@ -1,4 +1,3 @@
-import { CACHE_STALE_TIME } from '../../domain/enums/constants';
 import { Product } from '../../domain/entities/product';
 import { AddFavoriteUseCase, AddFavoriteInput } from '../../domain/use-cases/add-favorite';
 import { ExistingFavoriteError, ProductNotFoundError } from '../../domain/errors';
@@ -43,7 +42,7 @@ export class AddFavoriteService implements AddFavoriteUseCase {
       console.log(`Adding product ${productId} to customer ${customerId} favorites and caching data`);
       await Promise.all([
         this.addFavoriteRepository.addFavorite(customerId, productId),
-        this.addProductCache.addProduct(product, CACHE_STALE_TIME),
+        this.addProductCache.addProduct(product),
       ]);
 
       return product;

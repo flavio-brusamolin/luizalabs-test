@@ -1,3 +1,4 @@
+import env from '../../config/env';
 import { Handler } from '../../../interfaces/amqp/handlers/handler';
 import { RemovedProductHandler } from '../../../interfaces/amqp/handlers/removed-product-handler';
 import { ProductCache } from '../../../infra/cache/product-cache';
@@ -6,7 +7,7 @@ import { PurgeRemovedProductService } from '../../../app/services/purge-removed-
 
 export const buildRemovedProductHandler = (): Handler => {
   const customerRepository = new CustomerRepository();
-  const productCache = new ProductCache();
+  const productCache = new ProductCache(env.cacheConfig.staleTime);
   const purgeRemovedProductService = new PurgeRemovedProductService(customerRepository, productCache);
   return new RemovedProductHandler(purgeRemovedProductService);
 };

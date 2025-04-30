@@ -2,14 +2,16 @@ import { AddProductCache, GetProductCache, UpdateProductCache, RemoveProductCach
 import { Product, ProductId } from '../../domain/entities/product';
 
 export class ProductCache implements AddProductCache, GetProductCache, UpdateProductCache, RemoveProductCache {
+  constructor(private readonly staleTime: number) {}
+
   private static products = new Map<ProductId, { data: Product; staleTimer?: NodeJS.Timeout }>();
 
-  async addProduct(product: Product, staleTime: number): Promise<void> {
-    this.setProduct(product, staleTime);
+  async addProduct(product: Product): Promise<void> {
+    this.setProduct(product);
   }
 
-  async updateProduct(product: Product, staleTime: number): Promise<void> {
-    this.setProduct(product, staleTime);
+  async updateProduct(product: Product): Promise<void> {
+    this.setProduct(product);
   }
 
   async getProduct(productId: ProductId): Promise<Product> {
@@ -21,12 +23,12 @@ export class ProductCache implements AddProductCache, GetProductCache, UpdatePro
     ProductCache.products.delete(productId);
   }
 
-  private setProduct(product: Product, staleTime: number): void {
+  private setProduct(product: Product): void {
     this.clearStaleTimer(product.productId);
 
     const staleTimer = setTimeout(() => {
       this.markAsStale(product.productId);
-    }, staleTime);
+    }, this.staleTime);
 
     ProductCache.products.set(product.productId, {
       data: product,
