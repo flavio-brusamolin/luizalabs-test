@@ -8,20 +8,24 @@ export interface CustomerInput {
   email: string;
 }
 
+export interface SerializedCustomer {
+  customerId: CustomerId;
+  name: string;
+  email: string;
+}
+
 export class Customer {
   customerId: CustomerId;
   name: string;
   email: string;
   favorites: Array<ProductId> = [];
+  apiKey: string;
 
   constructor({ name, email }: CustomerInput) {
-    this.setCustomerId();
     this.setName(name);
     this.setEmail(email);
-  }
-
-  private setCustomerId(): void {
-    this.customerId = crypto.randomUUID();
+    this.setCustomerId();
+    this.setApiKey();
   }
 
   private setName(name: string): void {
@@ -36,5 +40,21 @@ export class Customer {
       throw new RequiredParameterError('email');
     }
     this.email = email;
+  }
+
+  private setCustomerId(): void {
+    this.customerId = crypto.randomUUID();
+  }
+
+  private setApiKey(): void {
+    this.apiKey = crypto.randomUUID();
+  }
+
+  serialize(): SerializedCustomer {
+    return {
+      customerId: this.customerId,
+      name: this.name,
+      email: this.email,
+    };
   }
 }

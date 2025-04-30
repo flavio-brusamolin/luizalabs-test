@@ -2,11 +2,13 @@ import { Customer } from '../../domain/entities/customer';
 import { EmailAlreadyRegisteredError } from '../../domain/errors/email-already-registered-error';
 import { AddCustomerInput, AddCustomerUseCase } from '../../domain/use-cases/add-customer';
 import { AddCustomerRepository, LoadCustomerByEmailRepository } from '../contracts/database';
+import { PublishCreatedCustomerQueue } from '../contracts/queue';
 
 export class AddCustomerService implements AddCustomerUseCase {
   constructor(
     private readonly loadCustomerByEmailRepository: LoadCustomerByEmailRepository,
-    private readonly addCustomerRepository: AddCustomerRepository
+    private readonly addCustomerRepository: AddCustomerRepository,
+    private readonly publishCreatedCustomerQueue: PublishCreatedCustomerQueue
   ) {}
 
   async execute({ name, email }: AddCustomerInput): Promise<Customer> {
@@ -19,6 +21,11 @@ export class AddCustomerService implements AddCustomerUseCase {
     const newCustomer = new Customer({ name, email });
 
     console.log(`Adding customer ${name} with ID ${newCustomer.customerId}`);
-    return await this.addCustomerRepository.addCustomer(newCustomer);
+    await this.addCustomerRepository.addCustomer(newCustomer);
+
+    console.log(`Queueing customer ${newCustomer.customerId} created`);
+    this.publishCreatedCustomerQueue.publishCreatedCustomer(newCustomer);
+
+    return newCustomer;
   }
 }
