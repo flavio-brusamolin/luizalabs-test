@@ -33,7 +33,6 @@ services:
     image: favorites-service
     restart: always
     environment:
-      PORT: 8080
       PRODUCT_API_URL: http://product-api-mock:8081
       RABBITMQ_URL: amqp://admin:admin@message-queue:5672
     volumes:

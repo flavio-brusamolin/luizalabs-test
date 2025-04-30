@@ -4,17 +4,17 @@ import queues from './queues';
 
 interface Config {
   uri: string;
-  retryInterval: number;
+  dlqRetryInterval: number;
 }
 
 export class AmqpProvider {
   private static connection: ChannelModel;
   private static channel: Channel;
 
-  public async init({ uri, retryInterval }: Config): Promise<void> {
+  public async init({ uri, dlqRetryInterval }: Config): Promise<void> {
     await this.establishConnection(uri);
     await this.createChannel();
-    await this.assertQueues(retryInterval);
+    await this.assertQueues(dlqRetryInterval);
   }
 
   public publish<T>(queue: string, payload: T): boolean {
@@ -45,7 +45,7 @@ export class AmqpProvider {
     }
   }
 
-  private async assertQueues(retryInterval: number): Promise<void> {
+  private async assertQueues(dlqRetryInterval: number): Promise<void> {
     for (const queue of Object.values(queues)) {
       const deadLetterQueue = `${queue}-dlq`;
 
@@ -53,7 +53,7 @@ export class AmqpProvider {
         durable: true,
         deadLetterExchange: '',
         deadLetterRoutingKey: queue,
-        messageTtl: retryInterval,
+        messageTtl: dlqRetryInterval,
       });
 
       await AmqpProvider.channel.assertQueue(queue, {

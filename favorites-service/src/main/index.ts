@@ -2,7 +2,7 @@ import env from './config/env';
 import queues from '../infra/queue/queues';
 import { AmqpProvider } from '../infra/queue/amqp-provider';
 import { HttpServer } from '../infra/server/http-server';
-import { buildStaleProductHandler, buildRemovedProductHandler } from './factories/handlers';
+import { buildStaleProductHandler, buildRemovedProductHandler, buildCreatedCustomerHandler } from './factories/handlers';
 import {
   buildAddCustomerController,
   buildAddFavoriteController,
@@ -29,6 +29,7 @@ class Application {
   private setupQueues(): void {
     this.amqpProvider.subscribe(queues.STALE_PRODUCT, buildStaleProductHandler());
     this.amqpProvider.subscribe(queues.REMOVED_PRODUCT, buildRemovedProductHandler());
+    this.amqpProvider.subscribe(queues.CREATED_CUSTOMER, buildCreatedCustomerHandler());
   }
 
   private setupRoutes(): void {
