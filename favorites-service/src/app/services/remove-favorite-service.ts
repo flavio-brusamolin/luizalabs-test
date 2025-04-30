@@ -13,9 +13,11 @@ export class RemoveFavoriteService implements RemoveFavoriteUseCase {
 
     const isFavorite = await this.checkFavoriteRepository.isFavorite(customerId, productId);
     if (!isFavorite) {
+      console.error(`Favorite ${productId} not found for customer ${customerId}`);
       throw new FavoriteNotFoundError();
     }
 
+    console.log(`Removing favorite ${productId} for customer ${customerId}`);
     await this.removeFavoriteRepository.removeFavorite(customerId, productId);
   }
 }

@@ -12,10 +12,13 @@ export class AddCustomerService implements AddCustomerUseCase {
   async execute({ name, email }: AddCustomerInput): Promise<Customer> {
     const registeredCustomer = await this.loadCustomerByEmailRepository.loadCustomerByEmail(email);
     if (registeredCustomer) {
+      console.error(`Chosen email ${email} is already in use`);
       throw new EmailAlreadyRegisteredError();
     }
 
     const newCustomer = new Customer({ name, email });
+
+    console.log(`Adding customer ${name} with ID ${newCustomer.customerId}`);
     return await this.addCustomerRepository.addCustomer(newCustomer);
   }
 }

@@ -9,7 +9,10 @@ export class PurgeRemovedProductService implements PurgeRemovedProductUseCase {
   ) {}
 
   async execute({ productId }: PurgeRemovedProductInput): Promise<void> {
+    console.log(`Removing favorite ${productId} from all customer lists`);
     await this.purgeFavoriteRepository.purgeFavorite(productId);
+
+    console.log(`Removing product ${productId} from cache`);
     await this.removeProductCache.removeProduct(productId);
   }
 }
