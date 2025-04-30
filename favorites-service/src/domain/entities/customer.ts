@@ -2,6 +2,7 @@ import { RequiredParameterError } from '../errors/required-parameter-error';
 import { ProductId } from './product';
 
 export type CustomerId = string;
+export type ApiKey = string;
 
 export interface CustomerInput {
   name: string;
@@ -19,7 +20,7 @@ export class Customer {
   name: string;
   email: string;
   favorites: Array<ProductId> = [];
-  apiKey: string;
+  apiKey: ApiKey;
 
   constructor({ name, email }: CustomerInput) {
     this.setName(name);

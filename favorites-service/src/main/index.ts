@@ -6,6 +6,7 @@ import { buildStaleProductHandler, buildRemovedProductHandler, buildCreatedCusto
 import {
   buildAddCustomerController,
   buildAddFavoriteController,
+  buildAuthenticateCustomerController,
   buildGetFavoritesController,
   buildRemoveFavoriteController,
 } from './factories/controllers';
@@ -33,6 +34,7 @@ class Application {
   }
 
   private setupRoutes(): void {
+    this.httpServer.on('post', '/auth', buildAuthenticateCustomerController());
     this.httpServer.on('post', '/customers', buildAddCustomerController());
     this.httpServer.on('post', '/customers/:customerId/favorites', buildAddFavoriteController());
     this.httpServer.on('get', '/customers/:customerId/favorites', buildGetFavoritesController());

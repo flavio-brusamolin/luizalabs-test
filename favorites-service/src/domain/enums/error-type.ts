@@ -3,4 +3,5 @@ export enum ErrorType {
   NOT_FOUND = 'not-found',
   INTERNAL = 'internal',
   CONTRACT = 'contract',
+  AUTHENTICATION = 'authentication',
 }

@@ -1,5 +1,5 @@
 import { createTransport, createTestAccount, getTestMessageUrl, Transporter } from 'nodemailer';
-import { EmailDetails, SendEmail } from '../../app/contracts/email/send-email';
+import { EmailDetails, SendEmail } from '../../app/contracts/email';
 
 interface SmtpConfig {
   host: string;

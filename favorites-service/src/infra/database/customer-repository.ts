@@ -6,8 +6,9 @@ import {
   RemoveFavoriteRepository,
   AddCustomerRepository,
   LoadCustomerByEmailRepository,
+  LoadCustomerByApiKeyRepository,
 } from '../../app/contracts/database';
-import { Customer, CustomerId } from '../../domain/entities/customer';
+import { ApiKey, Customer, CustomerId } from '../../domain/entities/customer';
 import { ProductId } from '../../domain/entities/product';
 
 export class CustomerRepository
@@ -18,7 +19,8 @@ export class CustomerRepository
     RemoveFavoriteRepository,
     PurgeFavoriteRepository,
     LoadCustomerByEmailRepository,
-    AddCustomerRepository
+    AddCustomerRepository,
+    LoadCustomerByApiKeyRepository
 {
   private static customers: Customer[] = [];
 
@@ -29,6 +31,10 @@ export class CustomerRepository
 
   async loadCustomerByEmail(email: string): Promise<Customer> {
     return CustomerRepository.customers.find((customer) => customer.email === email);
+  }
+
+  async loadCustomerByApiKey(apiKey: ApiKey): Promise<Customer> {
+    return CustomerRepository.customers.find((customer) => customer.apiKey === apiKey);
   }
 
   async addFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {

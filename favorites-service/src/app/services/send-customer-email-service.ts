@@ -2,7 +2,7 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 import { Customer } from '../../domain/entities/customer';
 import { SendCustomerEmailUseCase } from '../../domain/use-cases/send-customer-email';
-import { EmailDetails, SendEmail } from '../contracts/email/send-email';
+import { EmailDetails, SendEmail } from '../contracts/email';
 
 const emailPath = join(__dirname, '../templates/customer-email.html');
 const emailContent = readFileSync(emailPath, 'utf8');

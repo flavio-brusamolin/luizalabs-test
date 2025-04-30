@@ -5,3 +5,4 @@ export * from './remove-favorite-repository';
 export * from './purge-favorite-repository';
 export * from './add-customer-repository';
 export * from './load-customer-by-email-repository';
+export * from './load-customer-by-api-key';
