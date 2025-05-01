@@ -5,8 +5,11 @@ export type CustomerId = string;
 export type ApiKey = string;
 
 export interface CustomerInput {
+  customerId?: CustomerId;
   name: string;
   email: string;
+  favorites?: ProductId[];
+  apiKey?: ApiKey;
 }
 
 export interface SerializedCustomer {
@@ -19,14 +22,19 @@ export class Customer {
   customerId: CustomerId;
   name: string;
   email: string;
-  favorites: Array<ProductId> = [];
+  favorites: ProductId[];
   apiKey: ApiKey;
 
-  constructor({ name, email }: CustomerInput) {
+  constructor({ customerId, name, email, favorites, apiKey }: CustomerInput) {
+    this.setCustomerId(customerId);
     this.setName(name);
     this.setEmail(email);
-    this.setCustomerId();
-    this.setApiKey();
+    this.setFavorites(favorites);
+    this.setApiKey(apiKey);
+  }
+
+  private setCustomerId(customerId?: CustomerId): void {
+    this.customerId = customerId ?? crypto.randomUUID();
   }
 
   private setName(name: string): void {
@@ -43,12 +51,12 @@ export class Customer {
     this.email = email;
   }
 
-  private setCustomerId(): void {
-    this.customerId = crypto.randomUUID();
+  private setFavorites(favorites?: ProductId[]): void {
+    this.favorites = favorites ?? [];
   }
 
-  private setApiKey(): void {
-    this.apiKey = crypto.randomUUID();
+  private setApiKey(apiKey?: ApiKey): void {
+    this.apiKey = apiKey ?? crypto.randomUUID();
   }
 
   serialize(): SerializedCustomer {

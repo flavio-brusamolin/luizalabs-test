@@ -1,5 +1,9 @@
-import { Customer, CustomerInput } from '../entities/customer';
+import { Customer } from '../entities/customer';
 import { UseCase } from './use-case';
 
-export type AddCustomerInput = CustomerInput;
+export type AddCustomerInput = {
+  name: string;
+  email: string;
+};
+
 export type AddCustomerUseCase = UseCase<AddCustomerInput, Customer>;

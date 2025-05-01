@@ -11,6 +11,7 @@ import {
   buildGetFavoritesController,
   buildRemoveCustomerController,
   buildRemoveFavoriteController,
+  buildUpdateCustomerController,
 } from './factories/controllers';
 import { buildAuthenticationMiddleware } from './factories/middlewares';
 
@@ -41,6 +42,7 @@ class Application {
     this.httpServer.on('post', '/signup', buildAddCustomerController());
     this.httpServer.on('post', '/signin', buildAuthenticateCustomerController());
     this.httpServer.on('get', '/me', buildGetCustomerController(), authenticationMiddleware);
+    this.httpServer.on('patch', '/me', buildUpdateCustomerController(), authenticationMiddleware);
     this.httpServer.on('delete', '/me', buildRemoveCustomerController(), authenticationMiddleware);
     this.httpServer.on('post', '/favorites', buildAddFavoriteController(), authenticationMiddleware);
     this.httpServer.on('get', '/favorites', buildGetFavoritesController(), authenticationMiddleware);
