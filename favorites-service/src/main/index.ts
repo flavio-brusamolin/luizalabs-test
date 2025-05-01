@@ -37,8 +37,8 @@ class Application {
 
   private setupRoutes(): void {
     const authenticationMiddleware = buildAuthenticationMiddleware();
-    this.httpServer.on('post', '/auth', buildAuthenticateCustomerController());
-    this.httpServer.on('post', '/customers', buildAddCustomerController());
+    this.httpServer.on('post', '/signup', buildAddCustomerController());
+    this.httpServer.on('post', '/signin', buildAuthenticateCustomerController());
     this.httpServer.on('get', '/me', buildGetCustomerController(), authenticationMiddleware);
     this.httpServer.on('post', '/favorites', buildAddFavoriteController(), authenticationMiddleware);
     this.httpServer.on('get', '/favorites', buildGetFavoritesController(), authenticationMiddleware);
