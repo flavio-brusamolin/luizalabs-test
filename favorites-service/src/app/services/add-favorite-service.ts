@@ -48,9 +48,8 @@ export class AddFavoriteService implements AddFavoriteUseCase {
 
     console.log(`Cache hit for product ${productId}`);
 
-    if (cachedProduct.stale /* && !cachedProduct.updating */) {
+    if (cachedProduct.stale) {
       console.log(`Product ${productId} is stale in cache, queueing update`);
-      // setar campo updating no product para evitar que multiplas mensagens sejam disparadas
       this.publishStaleProductQueue.publishStaleProduct(productId);
     }
 
