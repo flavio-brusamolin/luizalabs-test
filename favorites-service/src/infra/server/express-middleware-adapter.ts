@@ -5,12 +5,16 @@ import { Middleware } from '../../interfaces/http/middlewares/middleware';
 export const adaptMiddleware = (middleware: Middleware): RequestHandler => {
   return async (req, res, next) => {
     const httpRequest: HttpRequest = {
+      body: req.body,
       headers: req.headers,
+      params: req.params,
+      query: req.query,
     };
 
     const { statusCode, body } = await middleware.handle(httpRequest);
 
-    if (statusCode === 200) {
+    const isSuccessCode = statusCode >= 200 && statusCode < 300;
+    if (isSuccessCode) {
       Object.assign(req, body);
       next();
     } else {

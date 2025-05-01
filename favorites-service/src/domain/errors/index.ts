@@ -5,3 +5,4 @@ export * from './authentication-failed-error';
 export * from './email-already-registered-error';
 export * from './required-parameter-error';
 export * from './customer-not-found-error';
+export * from './invalid-input-error';

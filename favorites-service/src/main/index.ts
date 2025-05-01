@@ -14,6 +14,14 @@ import {
   buildUpdateCustomerController,
 } from './factories/controllers';
 import { buildAuthenticationMiddleware } from './factories/middlewares';
+import { buildValidationMiddleware } from './factories/middlewares/validation-middleware-factory';
+import {
+  AddCustomerSchema,
+  AuthenticateCustomerSchema,
+  UpdateCustomerSchema,
+  AddFavoriteSchema,
+  RemoveFavoriteSchema,
+} from '../infra/validation/schemas';
 
 class Application {
   private amqpProvider: AmqpProvider;
@@ -39,14 +47,25 @@ class Application {
 
   private setupRoutes(): void {
     const authenticationMiddleware = buildAuthenticationMiddleware();
-    this.httpServer.on('post', '/signup', buildAddCustomerController());
-    this.httpServer.on('post', '/signin', buildAuthenticateCustomerController());
-    this.httpServer.on('get', '/me', buildGetCustomerController(), authenticationMiddleware);
-    this.httpServer.on('patch', '/me', buildUpdateCustomerController(), authenticationMiddleware);
-    this.httpServer.on('delete', '/me', buildRemoveCustomerController(), authenticationMiddleware);
-    this.httpServer.on('post', '/favorites', buildAddFavoriteController(), authenticationMiddleware);
-    this.httpServer.on('get', '/favorites', buildGetFavoritesController(), authenticationMiddleware);
-    this.httpServer.on('delete', '/favorites/:productId', buildRemoveFavoriteController(), authenticationMiddleware);
+    this.httpServer.on('post', '/signup', buildAddCustomerController(), [buildValidationMiddleware(AddCustomerSchema)]);
+    this.httpServer.on('post', '/signin', buildAuthenticateCustomerController(), [
+      buildValidationMiddleware(AuthenticateCustomerSchema),
+    ]);
+    this.httpServer.on('get', '/me', buildGetCustomerController(), [authenticationMiddleware]);
+    this.httpServer.on('patch', '/me', buildUpdateCustomerController(), [
+      authenticationMiddleware,
+      buildValidationMiddleware(UpdateCustomerSchema),
+    ]);
+    this.httpServer.on('delete', '/me', buildRemoveCustomerController(), [authenticationMiddleware]);
+    this.httpServer.on('post', '/favorites', buildAddFavoriteController(), [
+      authenticationMiddleware,
+      buildValidationMiddleware(AddFavoriteSchema),
+    ]);
+    this.httpServer.on('get', '/favorites', buildGetFavoritesController(), [authenticationMiddleware]);
+    this.httpServer.on('delete', '/favorites/:productId', buildRemoveFavoriteController(), [
+      authenticationMiddleware,
+      buildValidationMiddleware(RemoveFavoriteSchema),
+    ]);
   }
 
   async init(): Promise<void> {

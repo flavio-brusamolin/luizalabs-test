@@ -15,12 +15,10 @@ export class HttpServer {
     this.app.use('/api', this.router);
   }
 
-  on(method: string, path: string, controller: Controller, middleware?: Middleware): void {
-    if (middleware) {
-      this.router[method](path, adaptMiddleware(middleware), adaptRoute(controller));
-    }
-
-    this.router[method](path, adaptRoute(controller));
+  on(method: string, path: string, controller: Controller, middlewares: Middleware[] = []): void {
+    const adaptedMiddlewares = middlewares.map(adaptMiddleware);
+    const adaptedController = adaptRoute(controller);
+    this.router[method](path, ...adaptedMiddlewares, adaptedController);
   }
 
   listen(port: number): void {
