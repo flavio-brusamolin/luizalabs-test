@@ -1,71 +1,20 @@
 import env from './config/env';
-import queues from '../infra/queue/queues';
 import { AmqpProvider } from '../infra/queue/amqp-provider';
 import { HttpServer } from '../infra/server/http-server';
-import { buildStaleProductHandler, buildRemovedProductHandler, buildCreatedCustomerHandler } from './factories/handlers';
-import {
-  buildAddCustomerController,
-  buildAddFavoriteController,
-  buildAuthenticateCustomerController,
-  buildGetCustomerController,
-  buildGetFavoritesController,
-  buildRemoveCustomerController,
-  buildRemoveFavoriteController,
-  buildUpdateCustomerController,
-} from './factories/controllers';
-import { buildAuthenticationMiddleware } from './factories/middlewares';
-import { buildValidationMiddleware } from './factories/middlewares/validation-middleware-factory';
-import {
-  AddCustomerSchema,
-  AuthenticateCustomerSchema,
-  UpdateCustomerSchema,
-  AddFavoriteSchema,
-  RemoveFavoriteSchema,
-} from '../infra/validation/schemas';
+import { setupRoutes } from './config/routes';
+import { setupQueues } from './config/queues';
 
 class Application {
-  private amqpProvider: AmqpProvider;
-  private httpServer: HttpServer;
-
   private async initMessageQueue(): Promise<void> {
-    this.amqpProvider = new AmqpProvider();
-    await this.amqpProvider.init(env.amqpConfig);
-    this.setupQueues();
+    const amqpProvider = new AmqpProvider();
+    await amqpProvider.init(env.amqpConfig);
+    setupQueues(amqpProvider);
   }
 
   private initServer(): void {
-    this.httpServer = new HttpServer();
-    this.setupRoutes();
-    this.httpServer.listen(env.serverConfig.port);
-  }
-
-  private setupQueues(): void {
-    this.amqpProvider.subscribe(queues.STALE_PRODUCT, buildStaleProductHandler());
-    this.amqpProvider.subscribe(queues.REMOVED_PRODUCT, buildRemovedProductHandler());
-    this.amqpProvider.subscribe(queues.CREATED_CUSTOMER, buildCreatedCustomerHandler());
-  }
-
-  private setupRoutes(): void {
-    const authenticationMiddleware = buildAuthenticationMiddleware();
-    this.httpServer.on('post', '/signup', buildAddCustomerController(), [buildValidationMiddleware(AddCustomerSchema)]);
-    this.httpServer.on('post', '/signin', buildAuthenticateCustomerController(), [
-      buildValidationMiddleware(AuthenticateCustomerSchema),
-    ]);
-    this.httpServer.on('get', '/me', buildGetCustomerController(), [authenticationMiddleware]);
-    this.httpServer.on('patch', '/me', buildUpdateCustomerController(), [
-      authenticationMiddleware,
-      buildValidationMiddleware(UpdateCustomerSchema),
-    ]);
-    this.httpServer.on('delete', '/me', buildRemoveCustomerController(), [authenticationMiddleware]);
-    this.httpServer.on('post', '/favorites', buildAddFavoriteController(), [
-      authenticationMiddleware,
-      buildValidationMiddleware(AddFavoriteSchema),
-    ]);
-    this.httpServer.on('get', '/favorites', buildGetFavoritesController(), [authenticationMiddleware]);
-    this.httpServer.on('delete', '/favorites/:productId', buildRemoveFavoriteController(), [
-      authenticationMiddleware,
-      buildValidationMiddleware(RemoveFavoriteSchema),
-    ]);
+    const httpServer = new HttpServer();
+    setupRoutes(httpServer);
+    httpServer.listen(env.serverConfig.port);
   }
 
   async init(): Promise<void> {
