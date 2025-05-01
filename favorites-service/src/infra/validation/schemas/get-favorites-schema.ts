@@ -3,7 +3,7 @@ import { RequestSchema } from '../request-schema';
 
 export const GetFavoritesSchema: RequestSchema = {
   query: joi.object({
-    page: joi.number().integer().min(1),
-    limit: joi.number().integer().min(1).max(100),
+    page: joi.number().integer().min(1).example(1),
+    limit: joi.number().integer().min(1).max(100).example(10),
   }),
 };

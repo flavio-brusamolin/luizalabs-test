@@ -13,7 +13,8 @@ class Application {
 
   private initServer(): void {
     const httpServer = new HttpServer();
-    setupRoutes(httpServer);
+    const routes = setupRoutes(httpServer);
+    httpServer.docs(routes);
     httpServer.listen(env.serverConfig.port);
   }
 
