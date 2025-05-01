@@ -1,6 +1,8 @@
 import express, { Express, Router } from 'express';
 import { Controller } from '../../interfaces/http/controllers/controller';
-import { adaptRoute } from './express-adapter';
+import { adaptRoute } from './express-route-adapter';
+import { Middleware } from '../../interfaces/http/middlewares/middleware';
+import { adaptMiddleware } from './express-middleware-adapter';
 
 export class HttpServer {
   private app: Express;
@@ -13,7 +15,11 @@ export class HttpServer {
     this.app.use('/api', this.router);
   }
 
-  on(method: string, path: string, controller: Controller): void {
+  on(method: string, path: string, controller: Controller, middleware?: Middleware): void {
+    if (middleware) {
+      this.router[method](path, adaptMiddleware(middleware), adaptRoute(controller));
+    }
+
     this.router[method](path, adaptRoute(controller));
   }
 

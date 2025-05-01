@@ -10,6 +10,7 @@ import {
   buildGetFavoritesController,
   buildRemoveFavoriteController,
 } from './factories/controllers';
+import { buildAuthenticationMiddleware } from './factories/middlewares';
 
 class Application {
   private amqpProvider: AmqpProvider;
@@ -34,11 +35,12 @@ class Application {
   }
 
   private setupRoutes(): void {
+    const authenticationMiddleware = buildAuthenticationMiddleware();
     this.httpServer.on('post', '/auth', buildAuthenticateCustomerController());
     this.httpServer.on('post', '/customers', buildAddCustomerController());
-    this.httpServer.on('post', '/customers/:customerId/favorites', buildAddFavoriteController());
-    this.httpServer.on('get', '/customers/:customerId/favorites', buildGetFavoritesController());
-    this.httpServer.on('delete', '/customers/:customerId/favorites/:productId', buildRemoveFavoriteController());
+    this.httpServer.on('post', '/favorites', buildAddFavoriteController(), authenticationMiddleware);
+    this.httpServer.on('get', '/favorites', buildGetFavoritesController(), authenticationMiddleware);
+    this.httpServer.on('delete', '/favorites/:productId', buildRemoveFavoriteController(), authenticationMiddleware);
   }
 
   async init(): Promise<void> {

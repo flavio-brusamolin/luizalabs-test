@@ -1,5 +1,6 @@
+import { CustomerId } from '../../domain/entities/customer';
 import { Product } from '../../domain/entities/product';
-import { GetFavoritesInput, GetFavoritesUseCase } from '../../domain/use-cases/get-favorites';
+import { GetFavoritesUseCase } from '../../domain/use-cases/get-favorites';
 import { GetProductCache } from '../contracts/cache';
 import { GetFavoritesRepository } from '../contracts/database/get-favorites-repository';
 import { PublishStaleProductQueue } from '../contracts/queue';
@@ -11,7 +12,7 @@ export class GetFavoritesService implements GetFavoritesUseCase {
     private readonly publishStaleProductQueue: PublishStaleProductQueue
   ) {}
 
-  async execute({ customerId }: GetFavoritesInput): Promise<Product[]> {
+  async execute(customerId: CustomerId): Promise<Product[]> {
     // validar existencia do customerId, aqui ou na autenticação
 
     console.log(`Getting customer ${customerId} favorites`);

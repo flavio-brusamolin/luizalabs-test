@@ -14,7 +14,7 @@ export class AddFavoriteController implements Controller {
 
   async handle(httpRequest: HttpRequest<RequestBody, any, RequestParams>): Promise<HttpResponse<ResponseBody>> {
     const input = {
-      customerId: httpRequest.params.customerId,
+      customerId: httpRequest.customerId,
       productId: httpRequest.body.productId,
     };
 
