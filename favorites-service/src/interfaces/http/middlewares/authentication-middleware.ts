@@ -1,5 +1,5 @@
 import { CustomerId } from '../../../domain/entities/customer';
-import { AuthenticationFailedError } from '../../../domain/errors/authentication-failed-error';
+import { AuthenticationFailedError } from '../../../domain/errors';
 import { ValidateCustomerAuthenticationUseCase } from '../../../domain/use-cases/validate-customer-authentication';
 import { ErrorResponse, HttpRequest, HttpResponse } from '../contracts';
 import { error, ok } from '../helpers/http-response-builder';

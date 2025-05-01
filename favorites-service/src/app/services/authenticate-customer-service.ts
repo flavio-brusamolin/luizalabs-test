@@ -1,4 +1,4 @@
-import { AuthenticationFailedError } from '../../domain/errors/authentication-failed-error';
+import { AuthenticationFailedError } from '../../domain/errors';
 import { AuthenticateCustomerUseCase, AuthenticateCustomerInput, Token } from '../../domain/use-cases/authenticate-customer';
 import { LoadCustomerByApiKeyRepository } from '../contracts/database';
 import { EncryptToken } from '../contracts/token';

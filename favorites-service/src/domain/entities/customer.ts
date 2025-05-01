@@ -1,4 +1,4 @@
-import { RequiredParameterError } from '../errors/required-parameter-error';
+import { RequiredParameterError } from '../errors';
 import { ProductId } from './product';
 
 export type CustomerId = string;

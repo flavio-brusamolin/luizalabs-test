@@ -6,3 +6,4 @@ export * from './purge-favorite-repository';
 export * from './add-customer-repository';
 export * from './load-customer-by-email-repository';
 export * from './load-customer-by-api-key';
+export * from './load-customer-by-id-repository';

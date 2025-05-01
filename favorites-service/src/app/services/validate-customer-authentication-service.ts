@@ -1,5 +1,5 @@
 import { CustomerId } from '../../domain/entities/customer';
-import { AuthenticationFailedError } from '../../domain/errors/authentication-failed-error';
+import { AuthenticationFailedError } from '../../domain/errors';
 import { Token } from '../../domain/use-cases/authenticate-customer';
 import { ValidateCustomerAuthenticationUseCase } from '../../domain/use-cases/validate-customer-authentication';
 import { DecryptToken } from '../contracts/token/decrypt-token';

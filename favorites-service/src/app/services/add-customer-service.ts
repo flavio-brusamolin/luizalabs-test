@@ -1,5 +1,5 @@
 import { Customer } from '../../domain/entities/customer';
-import { EmailAlreadyRegisteredError } from '../../domain/errors/email-already-registered-error';
+import { EmailAlreadyRegisteredError } from '../../domain/errors';
 import { AddCustomerInput, AddCustomerUseCase } from '../../domain/use-cases/add-customer';
 import { AddCustomerRepository, LoadCustomerByEmailRepository } from '../contracts/database';
 import { PublishCreatedCustomerQueue } from '../contracts/queue';
