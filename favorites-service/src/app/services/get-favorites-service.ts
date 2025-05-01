@@ -13,8 +13,6 @@ export class GetFavoritesService implements GetFavoritesUseCase {
   ) {}
 
   async execute(customerId: CustomerId): Promise<Product[]> {
-    // validar existencia do customerId, aqui ou na autenticação
-
     console.log(`Getting customer ${customerId} favorites`);
     const favoriteProductIds = await this.getFavoritesRepository.getFavorites(customerId);
 

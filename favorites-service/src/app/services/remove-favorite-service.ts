@@ -9,8 +9,6 @@ export class RemoveFavoriteService implements RemoveFavoriteUseCase {
   ) {}
 
   async execute({ customerId, productId }: RemoveFavoriteInput): Promise<void> {
-    // validar existencia do customerId, aqui ou na autenticação
-
     const isFavorite = await this.checkFavoriteRepository.isFavorite(customerId, productId);
     if (!isFavorite) {
       console.error(`Favorite ${productId} not found for customer ${customerId}`);

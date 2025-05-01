@@ -5,6 +5,6 @@ import { buildCustomerRepository } from '../infra';
 
 export const buildRemoveCustomerController = (): Controller => {
   const customerRepository = buildCustomerRepository();
-  const removeCustomerService = new RemoveCustomerService(customerRepository, customerRepository);
+  const removeCustomerService = new RemoveCustomerService(customerRepository);
   return new RemoveCustomerController(removeCustomerService);
 };
