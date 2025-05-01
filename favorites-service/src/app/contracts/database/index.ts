@@ -7,3 +7,4 @@ export * from './add-customer-repository';
 export * from './load-customer-by-email-repository';
 export * from './load-customer-by-api-key';
 export * from './load-customer-by-id-repository';
+export * from './remove-customer-repository';
