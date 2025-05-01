@@ -76,9 +76,12 @@ export class CustomerRepository
     return customer.favorites.includes(productId);
   }
 
-  async getFavorites(customerId: CustomerId): Promise<ProductId[]> {
+  async getFavorites(customerId: CustomerId, page: number, limit: number): Promise<ProductId[]> {
     const customer = this.findCustomer(customerId);
-    return customer.favorites;
+    const descFavorites = customer.favorites.slice().reverse();
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    return descFavorites.slice(start, end);
   }
 
   async removeFavorite(customerId: CustomerId, productId: ProductId): Promise<void> {

@@ -1,6 +1,5 @@
-import { CustomerId } from '../../domain/entities/customer';
 import { Product } from '../../domain/entities/product';
-import { GetFavoritesUseCase } from '../../domain/use-cases/get-favorites';
+import { GetFavoritesInput, GetFavoritesUseCase } from '../../domain/use-cases/get-favorites';
 import { GetProductCache } from '../contracts/cache';
 import { GetFavoritesRepository } from '../contracts/database/get-favorites-repository';
 import { PublishStaleProductQueue } from '../contracts/queue';
@@ -12,9 +11,9 @@ export class GetFavoritesService implements GetFavoritesUseCase {
     private readonly publishStaleProductQueue: PublishStaleProductQueue
   ) {}
 
-  async execute(customerId: CustomerId): Promise<Product[]> {
+  async execute({ customerId, page, limit }: GetFavoritesInput): Promise<Product[]> {
     console.log(`Getting customer ${customerId} favorites`);
-    const favoriteProductIds = await this.getFavoritesRepository.getFavorites(customerId);
+    const favoriteProductIds = await this.getFavoritesRepository.getFavorites(customerId, page, limit);
 
     const favoriteProductPromises = favoriteProductIds.map(async (productId) => {
       console.log(`Searching for product ${productId} in cache`);

@@ -3,3 +3,4 @@ export * from './authenticate-customer-schema';
 export * from './update-customer-schema';
 export * from './add-favorite-schema';
 export * from './remove-favorite-schema';
+export * from './get-favorites-schema';

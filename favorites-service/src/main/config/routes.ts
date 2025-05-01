@@ -3,6 +3,7 @@ import {
   AddCustomerSchema,
   AddFavoriteSchema,
   AuthenticateCustomerSchema,
+  GetFavoritesSchema,
   RemoveFavoriteSchema,
   UpdateCustomerSchema,
 } from '../../infra/validation/schemas';
@@ -52,7 +53,8 @@ export const setupRoutes = (httpServer: HttpServer): void => {
   ]);
 
   httpServer.on('get', '/favorites', buildGetFavoritesController(), [
-    authenticationMiddleware
+    authenticationMiddleware,
+    buildValidationMiddleware(GetFavoritesSchema)
   ]);
   
   httpServer.on('delete', '/favorites/:productId', buildRemoveFavoriteController(), [
