@@ -23,9 +23,7 @@ export class ValidateCustomerAuthenticationService implements ValidateCustomerAu
     }
 
     // The steps below would be unnecessary if we used a persistent database on disk
-    console.log(`Loading customer ${this.customerId}`);
     const customer = await this.loadCustomerByIdRepository.loadCustomerById(this.customerId);
-
     if (!customer) {
       console.error(`Customer ${this.customerId} not found`);
       throw new CustomerNotFoundError();
