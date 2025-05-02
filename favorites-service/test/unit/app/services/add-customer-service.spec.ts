@@ -98,8 +98,7 @@ describe('AddCustomerService', () => {
       const customerInput = makeFakeInput();
       const promise = addCustomerService.execute(customerInput);
 
-      const error = new EmailAlreadyRegisteredError();
-      await expect(promise).rejects.toThrow(error);
+      await expect(promise).rejects.toThrow(EmailAlreadyRegisteredError);
     });
 
     it('should call AddCustomerRepository with correct values', async () => {
