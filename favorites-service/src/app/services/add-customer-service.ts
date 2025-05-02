@@ -21,11 +21,11 @@ export class AddCustomerService implements AddCustomerUseCase {
     const newCustomer = new Customer({ name, email });
 
     console.log(`Adding customer ${name} with ID ${newCustomer.customerId}`);
-    await this.addCustomerRepository.addCustomer(newCustomer);
+    const createdCustomer = await this.addCustomerRepository.addCustomer(newCustomer);
 
-    console.log(`Queueing customer ${newCustomer.customerId} created`);
-    this.publishCreatedCustomerQueue.publishCreatedCustomer(newCustomer);
+    console.log(`Queueing customer ${createdCustomer.customerId} created`);
+    this.publishCreatedCustomerQueue.publishCreatedCustomer(createdCustomer);
 
-    return newCustomer;
+    return createdCustomer;
   }
 }
