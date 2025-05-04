@@ -22,7 +22,7 @@ export const error = (error: CustomError): HttpResponse<ErrorResponse> => ({
   body: mapMessage(error),
 });
 
-const mapStatusCode = ({ type = ErrorType.INTERNAL }: CustomError): number => {
+const mapStatusCode = ({ type }: CustomError): number => {
   const errors = {
     [ErrorType.CONTRACT]: 400,
     [ErrorType.AUTHENTICATION]: 401,
