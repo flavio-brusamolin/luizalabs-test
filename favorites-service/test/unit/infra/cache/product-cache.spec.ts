@@ -18,6 +18,10 @@ const makeSut = () => {
 };
 
 describe('ProductCache', () => {
+  beforeEach(() => {
+    (ProductCache as any).products.clear();
+  });
+
   afterEach(() => {
     jest.clearAllTimers();
   });
