@@ -1,17 +1,13 @@
 import { connect, ChannelModel, Channel, Replies } from 'amqplib';
 import { Handler } from '../../interfaces/amqp/handlers/handler';
+import { MessageQueueConfig, MessageQueueProvider } from './message-queue-provider';
 import queues from './queues';
 
-interface Config {
-  uri: string;
-  dlqRetryInterval: number;
-}
-
-export class AmqpProvider {
+export class AmqpProvider implements MessageQueueProvider {
   private static connection: ChannelModel;
   private static channel: Channel;
 
-  public async init({ uri, dlqRetryInterval }: Config): Promise<void> {
+  public async init({ uri, dlqRetryInterval }: MessageQueueConfig): Promise<void> {
     await this.establishConnection(uri);
     await this.createChannel();
     await this.assertQueues(dlqRetryInterval);
