@@ -98,11 +98,6 @@ export class CustomerRepository
   }
 
   private findCustomer(customerId: CustomerId): DatabaseCustomer {
-    const customer = CustomerRepository.customers.find((customer) => customer.customerId === customerId);
-    if (!customer) {
-      throw new Error('Customer not found');
-    }
-
-    return customer;
+    return CustomerRepository.customers.find((customer) => customer.customerId === customerId);
   }
 }
