@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: 22.15.0
 
+      - name: Build Docker image for mock
+        run: docker build -t product-api-mock ./mock
+
       - name: Install dependencies
         run: npm ci
 
