@@ -22,6 +22,21 @@
       "price": 2900,
       "image": "https://example.com/images/smart-tv.jpg",
       "brand": "LG"
+    },
+    {
+      "id": "03b3422c-e4a8-434a-bda2-23c974d021d5",
+      "title": "Garrafa",
+      "price": 150,
+      "image": "https://example.com/images/garrafa.jpg",
+      "brand": "Stanley"
+    },
+    {
+      "id": "0b1d0e55-245e-4772-9f77-9efc8526ffbd",
+      "title": "Tenis",
+      "price": 425,
+      "image": "https://example.com/images/tenis.jpg",
+      "brand": "Nike",
+      "reviewScore": 4.8
     }
   ]
 }

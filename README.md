@@ -1,40 +1,51 @@
 # Luizalabs - Serviço de favoritos
 
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?logo=codecov)
+
 ## 🛠️ Instalação e testes
 
-### Pré-requisitos
+### ✅ Pré-requisitos
+
+Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 
 - Docker Engine
 - Docker Compose
 
 ---
 
-### Instalação
+### 🚀 Instalação
+
+Execute o seguinte comando na raiz do projeto para iniciar todos os serviços:
 
 ```
 docker-compose up -d
 ```
 
-Acesse em: http://localhost:8080/api/docs
+- A API estará disponível em: http://localhost:8080/api
+- O Swagger estará disponível em: http://localhost:8080/api/docs
 
 ---
 
-### Playground
+### 🎮 Playground
 
-Use esses IDs de produto para testar:
+Você pode utilizar os seguintes IDs de produto para testar:
 
 ```
-"6ce6b564-92d3-492a-91ba-ee4e6aee7d87"
-"5db40d1b-6609-4d56-b20e-eb00e53b6299"
-"be9d0e0d-0780-4918-ab28-df723dcb4e3c"
+6ce6b564-92d3-492a-91ba-ee4e6aee7d87
+5db40d1b-6609-4d56-b20e-eb00e53b6299
+be9d0e0d-0780-4918-ab28-df723dcb4e3c
+03b3422c-e4a8-434a-bda2-23c974d021d5
+0b1d0e55-245e-4772-9f77-9efc8526ffbd
 ```
 
 ---
 
-### Testes
+### 🧪 Testes
+
+Instale as dependências e rode os testes com os comandos abaixo:
 
 ```
-npm i
+npm install
 npm run test:unit
 <!-- npm run test:integration -->
 ```
@@ -43,15 +54,15 @@ npm run test:unit
 
 ## 💡 Solução
 
-### Autenticação
+### 🔒 Autenticação
 
 Um dos requisitos do desafio é que o cliente se cadastre informando apenas seu nome e email. Uma vez que o cliente não define uma senha de acesso, fazer a sua autenticação por meio do email seria inseguro, já que qualquer outra pessoa poderia tentar acessar o serviço se soubesse o email de um cliente ou mesmo por força bruta na tentativa e erro.
 
-#### Possíveis soluções
+#### 📌 Possíveis soluções
 
 Considerando então esse cenário, existem algumas possibilidades para garantir a autenticação nesse serviço. A primeira delas e a mais comum num ambiente de microsserviços distribuídos seria essa autenticação estar no API Gateway, mas essa não é uma opção considerando o escopo do desafio. Uma outra possibilidade seria ter um serviço autenticador, que conheceria as credencias do cliente, e seria chamado pelo serviço de favoritos. Porém, essa também não é uma opção já que nenhum serviço de autenticação foi mencionado ou disponibilizado.
 
-#### Solução escolhida
+#### 🎯 Solução escolhida
 
 Já que não é possível contar com uma credencial que o **cliente saiba** ou com um componente externo que conheça as credenciais dele, a opção escolhida usufrui de algo que o **cliente tem**: acesso ao próprio email. Quando um cliente se cadastra (**POST /signup**), é disparado um email para ele com uma **chave de acesso (UUID)** no corpo. Essa chave de acesso deve ser utilizada para autenticá-lo no sistema (**POST /signin**). O **token (JWT)** gerado a partir de então o dará acesso a todos os recursos do serviço pelo tempo de expiração definido, até que ele tenha que se autenticar novamente usando a mesma chave de acesso. Esse tempo de expiração é configurável pela variável de ambiente **TOKEN_EXPIRATION**.
 
@@ -65,7 +76,7 @@ O disparo do email é feito de maneira assíncrona. Quando um cliente se registr
 
 ---
 
-### Gerenciamento de clientes
+### 🧑 Gerenciamento de clientes
 
 Um dos requisitos do desafio é que, após se registrar e autenticar, o cliente deve poder:
 
@@ -83,7 +94,7 @@ Um dos requisitos do desafio é que, após se registrar e autenticar, o cliente 
 
 ---
 
-### Gerenciamento de favoritos
+### ⭐ Gerenciamento de favoritos
 
 Um dos requisitos do desafio é que, após se registrar e autenticar, o cliente deve poder:
 
@@ -91,14 +102,14 @@ Um dos requisitos do desafio é que, após se registrar e autenticar, o cliente 
 - Visualizar produtos favoritos (**GET /favorites**)
 - Remover um produto da sua lista de favoritos (**DELETE /favorites/{id}**)
 
-#### Possíveis soluções
+#### 📌 Possíveis soluções
 
 Considerando que os dados dos produtos precisam ser extraídos de uma API externa, existem 2 opções mais simples para gerenciar favoritos do cliente:
 
 1. Ao adicionar um favorito, buscar os dados do produto na API e salvar esses dados dentro da lista de favoritos do cliente no banco. Quando o cliente solicitar seus favoritos, os dados já estarão salvos, eliminando a necessidade de chamadas externas. Essa opção até favorece a performance, mas possui sérios **problemas de consistência**, já que os mesmos dados continuariam sendo retornados ainda que os dados reais dos produtos fossem alterados.
 2. Ao adicionar um favorito, se o produto existir, salvar o ID do produto na lista de favoritos do cliente no banco. Quando o cliente solicitar seus favoritos, para cada ID de produto salvo na lista, será feita uma chamada externa para trazer os dados mais atualizados dos produtos. Essa opção é bem consistente, mas possui sérios **problemas de performance**, já que as múltiplas chamadas externas aumentariam a latência e sobrecarregariam a API de produtos. Além disso, também existe um **problema de resiliência**, já que o serviço seria fortemente acoplado a sua dependência e, consequentemente, frágil e pouco resiliente a possíveis falhas ou indisponibilidades da API externa.
 
-#### Solução escolhida
+#### 🎯 Solução escolhida
 
 Considerando esses fatores, a solução escolhida busca **equilibrar consistência, resiliência e ainda ser muito performática**. Para isso, foram utilizadas tecnologias de banco de dados, cache e mensageria (**RabbitMQ**), além da integração externa com a API de produtos. Seguem os detalhes da solução:
 
@@ -110,6 +121,7 @@ Considerando esses fatores, a solução escolhida busca **equilibrar consistênc
 **Ao buscar favoritos:**
 
 - Para cada ID de produto na lista de favoritos do cliente no banco, os dados desses produtos são recuperados do cache e retornados. Para cada produto obsoleto no cache, um evento **stale-product** é publicado.
+- Como a lista de favoritos é ilimitada, os dados podem ser paginados através dos parâmetros _page_ e _limit_.
 
 **Ao consumir evento "stale-product":**
 
