@@ -1,11 +1,11 @@
 services:
   product-api-mock:
     build:
-      context: ./product-api-mock
+      context: ./mock
     image: product-api-mock
     restart: always
     volumes:
-      - ./product-api-mock:/product-api-mock
+      - ./mock:/product-api-mock
     ports:
       - 8081:8081
 
@@ -26,7 +26,7 @@ services:
 
   favorites-service:
     build:
-      context: ./favorites-service
+      context: .
       dockerfile: Dockerfile.dev
     image: favorites-service
     restart: always
@@ -34,7 +34,7 @@ services:
       PRODUCT_API_URL: http://product-api-mock:8081
       RABBITMQ_URL: amqp://admin:admin@message-queue:5672
     volumes:
-      - ./favorites-service:/favorites-service
+      - .:/favorites-service
       - /favorites-service/node_modules
     ports:
       - 8080:8080

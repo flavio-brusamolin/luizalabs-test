@@ -1,7 +1,7 @@
 {
   "name": "favorites-service",
   "version": "1.0.0",
-  "description": "Service to handle customer favorite products",
+  "description": "Service to manage customer favorite products",
   "scripts": {
     "start": "node dist/main/index.js",
     "dev": "tsnd --respawn --transpile-only --ignore-watch node_modules --no-notify src/main/index.ts",
