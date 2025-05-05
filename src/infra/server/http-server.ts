@@ -32,4 +32,8 @@ export class HttpServer {
   listen(port: number): void {
     this.app.listen(port, () => console.log(`Server is running at http://localhost:${port}`));
   }
+
+  getApp(): Express {
+    return this.app;
+  }
 }

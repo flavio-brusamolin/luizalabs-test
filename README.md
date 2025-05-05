@@ -47,7 +47,7 @@ Instale as dependências e rode os testes com os comandos abaixo:
 ```
 npm install
 npm run test:unit
-<!-- npm run test:integration -->
+npm run test:integration
 ```
 
 ---
