@@ -1,7 +1,6 @@
 import { AmqpProvider } from '../../../../src/infra/queue/amqp-provider';
 import queues from '../../../../src/infra/queue/queues';
 import amqplib from 'amqplib';
-import { Handler } from '../../../../src/interfaces/amqp/handlers/handler';
 
 jest.mock('amqplib', () => {
   const assertQueueSpy = jest.fn();
