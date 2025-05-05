@@ -1,8 +1,6 @@
 # Luizalabs - Serviço de favoritos
 
-[TOC]
-
-## Instalação e testes
+## 🛠️ Instalação e testes
 
 ### Pré-requisitos
 
@@ -43,7 +41,7 @@ npm run test:unit
 
 ---
 
-## Solução
+## 💡 Solução
 
 ### Autenticação
 
