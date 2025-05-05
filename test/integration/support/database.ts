@@ -8,3 +8,7 @@ export function clearDatabase(): void {
 export function getCustomers(): DatabaseCustomer[] {
   return (CustomerRepository as any).customers;
 }
+
+export function getCustomerById(customerId: string): DatabaseCustomer {
+  return (CustomerRepository as any).customers.find((c: DatabaseCustomer) => c.customerId === customerId);
+}
