@@ -140,3 +140,7 @@ Considerando esses fatores, a solução escolhida busca **equilibrar consistênc
 
 - Conforme a restrição do desafio, o banco de dados e o cache estão em estruturas de dados em memória, mas poderiam ser facilmente substituídos por tecnologias reais, como **MongoDB/PostgreSQL** e **Redis**, respectivamente.
 - Caso as variáveis **CACHE_STALE_TIME** e **DLQ_RETRY_INTERVAL** não sejam configuradas, será utilizado o valor default de 10 segundos. Esse valor foi definido apenas para facilitar os testes e não necessariamente reflete a realidade.
+
+---
+
+## Pendências
