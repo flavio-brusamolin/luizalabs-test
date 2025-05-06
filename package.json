@@ -8,8 +8,8 @@
     "build": "rimraf dist && tsc -p tsconfig.build.json && npm run copy-files",
     "copy-files": "copyfiles -u 1 src/**/*.html dist",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:unit": "npm test -- --watch -c jest-unit.config.js",
-    "test:integration": "npm test -- --watch -c jest-integration.config.js",
+    "test:unit": "npm test -- -c jest-unit.config.js",
+    "test:integration": "npm test -- -c jest-integration.config.js",
     "test:coverage": "npm test -- --coverage"
   },
   "author": "Flavio Brusamolin",

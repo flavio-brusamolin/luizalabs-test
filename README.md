@@ -10,6 +10,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 
 - Docker Engine
 - Docker Compose
+- Node.js (Opcional)
 
 ---
 
@@ -25,6 +26,8 @@ docker-compose up -d
 
 - A API estará disponível em: http://localhost:8080/api
 - O Swagger estará disponível em: http://localhost:8080/api/docs
+
+⚠️ Se você pretende executar os testes automatizados localmente com Node.js, execute `npm install` antes de iniciar o `docker-compose` para evitar problemas de permissão posteriormente.
 
 ---
 
@@ -49,9 +52,15 @@ Caso prefira utilizar o Postman em vez do Swagger, importe os arquivos abaixo:
 
 ### 🧪 Testes
 
-Instale as dependências e rode os testes com os comandos abaixo:
+Execute os comandos abaixo para rodar os testes usando Docker:
 
-- `npm install` - Instala as dependências.
+- `docker-compose run --rm favorites-service npm test` - Executa todos os testes (unitários e de integração).
+- `docker-compose run --rm favorites-service npm run test:unit` - Executa apenas os testes unitários.
+- `docker-compose run --rm favorites-service npm run test:integration` - Executa apenas os testes de integração.
+- `docker-compose run --rm favorites-service npm run test:coverage` - Executa todos os testes e gera relatório de cobertura.
+
+Se você tem o Node.js instalado e já executou `npm install`, também pode rodar os testes com os comandos abaixo:
+
 - `npm test` - Executa todos os testes (unitários e de integração).
 - `npm run test:unit` - Executa apenas os testes unitários.
 - `npm run test:integration` - Executa apenas os testes de integração.
