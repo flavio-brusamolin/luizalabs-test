@@ -8,6 +8,8 @@ const makeFakeCustomer = () => ({
   email: 'flavio@mail.com',
 });
 
+const makeFakeProductId = () => '5db40d1b-6609-4d56-b20e-eb00e53b6299';
+
 describe('GET /favorites', () => {
   const endpoint = '/api/favorites';
   let app: Express;
@@ -28,17 +30,14 @@ describe('GET /favorites', () => {
   });
 
   it('should successfully return customer favorites', async () => {
-    const productIds = ['5db40d1b-6609-4d56-b20e-eb00e53b6299', '6ce6b564-92d3-492a-91ba-ee4e6aee7d87'];
-    for (const productId of productIds) {
-      await request(app).post(endpoint).set('Authorization', `Bearer ${accessToken}`).send({ productId: productId });
-    }
+    const productId = makeFakeProductId();
+    await request(app).post(endpoint).set('Authorization', `Bearer ${accessToken}`).send({ productId });
 
     const response = await request(app).get(endpoint).set('Authorization', `Bearer ${accessToken}`);
+    const [favorite] = response.body;
 
     expect(response.status).toBe(200);
-    for (const product of response.body) {
-      expect(productIds).toContain(product.productId);
-    }
+    expect(favorite.productId).toBe(productId);
   });
 
   it('should return a unauthorized error if authentication fails', async () => {
