@@ -44,11 +44,11 @@ be9d0e0d-0780-4918-ab28-df723dcb4e3c
 
 Instale as dependências e rode os testes com os comandos abaixo:
 
-```
-npm install
-npm run test:unit
-npm run test:integration
-```
+- `npm install` - Instala as dependências.
+- `npm test` - Executa todos os testes (unitários e de integração).
+- `npm run test:unit` - Executa apenas os testes unitários.
+- `npm run test:integration` - Executa apenas os testes de integração.
+- `npm run test:coverage` - Executa todos os testes e gera relatório de cobertura.
 
 ---
 
