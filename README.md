@@ -38,6 +38,11 @@ be9d0e0d-0780-4918-ab28-df723dcb4e3c
 0b1d0e55-245e-4772-9f77-9efc8526ffbd
 ```
 
+Caso prefira utilizar o Postman em vez do Swagger, importe os arquivos abaixo:
+
+- Coleção: [`postman/luizalabs.postman_collection.json`](./postman/luizalabs.postman_collection.json)
+- Ambiente: [`postman/env-luizalabs.postman_environment.json`](./postman/env-luizalabs.postman_environment.json)
+
 ---
 
 ### 🧪 Testes
@@ -143,4 +148,26 @@ Considerando esses fatores, a solução escolhida busca **equilibrar consistênc
 
 ---
 
-## Pendências
+## 📋 Melhorias e evoluções
+
+Algumas melhorias e evoluções que poderiam ser implementadas com mais tempo:
+
+#### 🧪 Melhoria dos testes integrados
+
+- Substituir os **mocks** de **fila (AMQP)** e **API externa** por containers reais nos testes de integração, garantindo maior fidelidade ao ambiente de produção.
+
+#### 📊 Observabilidade e Monitoramento
+
+- Adicionar **logs estruturados** com correlação entre requisições.
+- Implementar **métricas técnicas** (ex: tempo de resposta, taxa de erros) e **de negócio** (ex: novos cadastros de clientes).
+- Configurar **alertas automáticos** em caso de falhas.
+- Em caso de múltiplos serviços, introduzir **tracing distribuído** para acompanhar o fluxo entre módulos.
+
+#### 🔀 Processo de versionamento
+
+- Estruturar o fluxo de trabalho com **GitFlow**, incluindo branches padronizadas (`master`, `qa`, `develop`, `feature/*`, `hotfix/*`, `release/*`).
+
+#### 🚀 Implantação
+
+- Criar pipeline de **CD automatizado** com deploy em ambiente real.
+- Suporte a **rollback automático** em caso de falhas.
