@@ -1,6 +1,6 @@
 # Luizalabs - Serviço de favoritos
 
-![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?logo=codecov)
+[![codecov](https://codecov.io/gh/flavio-brusamolin/luizalabs-test/graph/badge.svg?token=9ZS8PUNLM1)](https://codecov.io/gh/flavio-brusamolin/luizalabs-test)
 
 ## 🛠️ Instalação e testes
 
