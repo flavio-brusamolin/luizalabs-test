@@ -15,6 +15,8 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 
 ### 🚀 Instalação
 
+Copie o arquivo [`.env.example`](./.env.example) para `.env` e ajuste os valores conforme necessário. Caso o arquivo `.env` não seja configurado, valores default serão utilizados.
+
 Execute o seguinte comando na raiz do projeto para iniciar todos os serviços:
 
 ```
